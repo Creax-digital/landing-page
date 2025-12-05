@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CREAX.digital | Luminous Geometry</title>
+    
+    <!-- Подключение шрифтов -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #050505;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --accent-cyan: #00f0ff;
+            --accent-blue: #2d5af0;
+            --border-dim: rgba(255, 255, 255, 0.1);
+            --border-light: rgba(255, 255, 255, 0.3);
+            --grid-line: rgba(255, 255, 255, 0.03);
+            --transition-speed: 0.4s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- BACKGROUND INTERACTIVITY --- */
+        #canvas-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Behind everything */
+            background: radial-gradient(circle at 50% 50%, #0a0a0a 0%, #000000 100%);
+        }
+
+        /* Mouse Glow Follower */
+        .cursor-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.08) 0%, rgba(45, 90, 240, 0.02) 40%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: screen;
+            transition: opacity 0.3s;
+        }
+
+        /* --- TEXTURE OVERLAYS (GLOBAL) --- */
+        .overlay-noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            opacity: 0.05;
+            background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+        }
+
+        .overlay-scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 998;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
+            background-size: 100% 4px;
+        }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3, h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 4rem);
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 10px;
+            right: -20px;
+            width: 10px;
+            height: 10px;
+            background: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--accent-cyan);
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-family: 'Space Grotesk', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* --- LAYOUT UTILS --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        section {
+            padding: 100px 0;
+            /* Убрал сплошную линию, теперь она будет полупрозрачной частью дизайна */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03); 
+            position: relative;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        /* --- BUTTONS --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 32px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: 1px solid var(--border-light);
+            background: rgba(0,0,0,0.3); /* Slight fill for readability over canvas */
+            backdrop-filter: blur(5px);
+            color: var(--text-main);
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            border-color: var(--accent-cyan);
+            text-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
+            background: rgba(0, 240, 255, 0.1);
+        }
+
+        .btn-primary {
+            border-color: var(--text-main);
+            background: var(--text-main);
+            color: var(--bg-color);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-cyan);
+            border-color: var(--accent-cyan);
+            color: var(--bg-color);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+        }
+
+        /* --- HERO SECTION --- */
+        #hero {
+            height: 100vh;
+            min-height: 700px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 0;
+            border-bottom: none;
+        }
+
+        /* Old static grid removed, replaced by dynamic canvas */
+        
+        .cube-wrapper {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+
+        .glow-core {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, var(--accent-cyan) 0%, rgba(45, 90, 240, 0.2) 60%, transparent 80%);
+            filter: blur(60px);
+            animation: pulseGlow 4s infinite alternate;
+        }
+
+        .cube-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Adding 3D perspective effect */
+            box-shadow: 0 0 50px rgba(0, 240, 255, 0.05);
+        }
+        
+        /* Markers */
+        .marker {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            transition: background 0.3s;
+        }
+        .marker::before, .marker::after {
+            content: '';
+            position: absolute;
+            background: var(--text-main);
+            transition: background 0.3s;
+        }
+        .marker::before { width: 100%; height: 1px; top: 50%; }
+        .marker::after { height: 100%; width: 1px; left: 50%; }
+        
+        .tl { top: -5px; left: -5px; }
+        .tr { top: -5px; right: -5px; }
+        .bl { bottom: -5px; left: -5px; }
+        .br { bottom: -5px; right: -5px; }
+
+        .hero-text {
+            position: absolute;
+            bottom: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 20;
+            width: 100%;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 6rem);
+            line-height: 0.9;
+            margin-bottom: 1rem;
+            letter-spacing: -0.04em;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5); /* Lift text from bg */
+        }
+
+        .hero-desc {
+            font-family: 'Space Grotesk';
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            letter-spacing: 0.2em;
+            font-size: 0.9rem;
+            background: rgba(0,0,0,0.3);
+            display: inline-block;
+            padding: 5px 10px;
+            backdrop-filter: blur(2px);
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* --- CARDS & GRIDS --- */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .card {
+            border: 1px solid var(--border-dim);
+            padding: 40px;
+            position: relative;
+            background: rgba(10, 10, 10, 0.4); /* More transparency */
+            backdrop-filter: blur(10px); /* Glassmorphism */
+            transition: all 0.4s ease;
+        }
+
+        .card:hover {
+            border-color: var(--accent-cyan);
+            background: rgba(10, 10, 10, 0.7);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.05);
+            transform: translateY(-5px);
+        }
+
+        .card:hover .marker::before, 
+        .card:hover .marker::after {
+            background: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--accent-cyan);
+        }
+        
+        .card:hover h3 {
+            color: var(--accent-cyan);
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--text-main);
+            transition: 0.3s;
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* --- SERVICES --- */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1px;
+            background: var(--border-dim);
+            border: 1px solid var(--border-dim);
+        }
+
+        .service-item {
+            background: rgba(5, 5, 5, 0.8); /* Slight opacity */
+            backdrop-filter: blur(5px);
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            transition: 0.3s;
+            cursor: default;
+        }
+
+        .service-content {
+            position: relative;
+            z-index: 2;
+            transition: transform 0.4s ease;
+        }
+
+        .service-media {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+        }
+
+        .service-media img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(120%);
+        }
+
+        .service-overlay-fx {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.4)), 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 240, 255, 0.1) 3px);
+            mix-blend-mode: hard-light;
+        }
+
+        .service-item:hover .service-media {
+            opacity: 1;
+        }
+
+        .service-item:hover .service-content {
+            transform: translateY(-5px);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        }
+
+        /* --- CASES --- */
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2px;
+            background: var(--grid-line);
+            border: 1px solid var(--grid-line);
+        }
+
+        .case-item {
+            background: rgba(5, 5, 5, 0.9);
+            aspect-ratio: 16/9;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        
+        .case-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.5;
+            transition: 0.5s;
+            filter: grayscale(100%);
+            z-index: 1;
+        }
+
+        .case-item:hover .case-img {
+            opacity: 0.8;
+            filter: grayscale(0%);
+            transform: scale(1.05);
+        }
+
+        .case-info {
+            position: relative;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .case-title {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .case-tag {
+            color: var(--accent-cyan);
+            font-family: 'Space Grotesk';
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .case-item.expanded {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 2000;
+            padding: 80px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            background: #000;
+        }
+
+        .case-item.expanded .case-img {
+            opacity: 0.3;
+            filter: grayscale(100%) brightness(0.5);
+            transform: scale(1);
+        }
+
+        .case-item.expanded .case-info {
+            max-width: 800px;
+            opacity: 0;
+            animation: fadeInSlide 0.6s 0.3s forwards;
+        }
+
+        .case-item.expanded .case-title {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 20px rgba(0,240,255,0.4);
+        }
+
+        .case-details-text {
+            display: none;
+            font-size: 1.2rem;
+            color: #ddd;
+            margin-top: 20px;
+            line-height: 1.8;
+            border-left: 2px solid var(--accent-cyan);
+            padding-left: 20px;
+        }
+
+        .case-item.expanded .case-details-text {
+            display: block;
+        }
+
+        .case-close-btn {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            font-size: 3rem;
+            color: transparent;
+            -webkit-text-stroke: 1px var(--text-main);
+            cursor: pointer;
+            z-index: 2001;
+            display: none;
+            font-family: 'Space Grotesk';
+            line-height: 1;
+            transition: 0.3s;
+        }
+
+        .case-close-btn:hover {
+            color: var(--accent-cyan);
+            -webkit-text-stroke: 1px var(--accent-cyan);
+            text-shadow: 0 0 15px var(--accent-cyan);
+            transform: rotate(90deg);
+        }
+
+        .case-item.expanded .case-close-btn {
+            display: block;
+        }
+
+        /* --- PACKAGES --- */
+        .package-list {
+            list-style: none;
+            margin: 20px 0 40px 0;
+        }
+        .package-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--grid-line);
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+        }
+        .package-price {
+            font-size: 2.5rem;
+            font-family: 'Space Grotesk';
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 100px 0 80px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            background: rgba(5,5,5,0.9);
+        }
+
+        .footer-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: #ffffff;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 30px;
+            letter-spacing: -0.02em;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-links a {
+            color: #888888;
+            text-decoration: none;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-cyan);
+        }
+
+        .footer-copyright {
+            color: #333333;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes pulseGlow {
+            0% { opacity: 0.6; transform: translate(-50%, -50%) scale(0.9); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        @keyframes fadeInSlide {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 3rem; }
+            .grid-3 { grid-template-columns: 1fr; }
+            .cases-grid { grid-template-columns: 1fr; }
+            .hero-text { bottom: 10%; }
+            .cube-wrapper { width: 280px; height: 280px; }
+            .case-item.expanded { padding: 30px; }
+            .case-item.expanded .case-title { font-size: 2.5rem; }
+            .case-close-btn { top: 20px; right: 20px; font-size: 2rem; }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- INTERACTIVE BACKGROUND -->
+    <canvas id="canvas-bg"></canvas>
+    <div class="cursor-glow"></div>
+
+    <!-- Visual Overlays -->
+    <div class="overlay-noise"></div>
+    <div class="overlay-scanlines"></div>
+
+    <!-- Navigation -->
+    <nav style="position: fixed; top: 0; left: 0; width: 100%; padding: 20px; z-index: 100; display: flex; justify-content: space-between; align-items: center; mix-blend-mode: difference;">
+        <div style="font-family: 'Space Grotesk'; font-weight: 700; font-size: 1.2rem;">CREAX.digital</div>
+        <div style="display: flex; gap: 20px;">
+            <a href="#services" style="color: white; text-decoration: none; font-size: 0.9rem;">Услуги</a>
+            <a href="#cases" style="color: white; text-decoration: none; font-size: 0.9rem;">Кейсы</a>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section id="hero">
+        <!-- Cube Object -->
+        <div class="cube-wrapper">
+            <div class="glow-core"></div>
+            <div class="cube-frame">
+                <div class="marker tl"></div>
+                <div class="marker tr"></div>
+                <div class="marker bl"></div>
+                <div class="marker br"></div>
+            </div>
+            <div style="position: absolute; bottom: -30px; left: 0; font-size: 10px; color: var(--text-muted); font-family: monospace;">
+                FIG. 01 / NEURAL CORE
+            </div>
+            <div style="position: absolute; bottom: -30px; right: 0; font-size: 10px; color: var(--text-muted); font-family: monospace;">
+                STATUS: ACTIVE
+            </div>
+        </div>
+
+        <div class="hero-text">
+            <div class="hero-desc">Generative Design Agency</div>
+            <h1 class="hero-title">The Future<br>Is Neural</h1>
+            <div class="hero-buttons">
+                <a href="#contact" class="btn btn-primary">Получить консультацию</a>
+                <a href="#cases" class="btn">Посмотреть кейсы</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- KEY POSITIONING -->
+    <section id="positioning">
+        <div class="container">
+            <span class="subtitle">О нас</span>
+            <h2 class="section-title">Цифровая Сингулярность</h2>
+            
+            <div class="grid-3">
+                <div class="card">
+                    <div class="marker tl"></div>
+                    <div class="card-icon">◇</div>
+                    <h3>Профессионализм</h3>
+                    <p>Большой опыт в сфере digital-creation, творческий подход и любовь к своему делу - то, что выделяет нашу команду.</p>
+                </div>
+                <div class="card">
+                    <div class="marker tr"></div>
+                    <div class="card-icon">◎</div>
+                    <h3>Технологичность</h3>
+                    <p>Синергия воображения, нейрокреатива и ручного продакшена для создания уникальных визуальных решений нового уровня.</p>
+                </div>
+                <div class="card">
+                    <div class="marker bl"></div>
+                    <div class="card-icon">▱</div>
+                    <h3>Ориентированность</h3>
+                    <p>Мы не просто рисуем картинки - мы создаем контент, ориентированный под ваш бизнес, ваши задачи и вашу аудиторию.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES (Interactive) -->
+    <section id="services">
+        <div class="container">
+            <span class="subtitle">Что мы делаем</span>
+            <h2 class="section-title">Услуги</h2>
+            
+            <div class="services-grid">
+                <!-- Service 1 -->
+                <div class="service-item">
+                    <div class="service-media">
+                        <!-- Placeholder GIF: Abstract Web -->
+                        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnZ5b2w0ZGR5M3Z6cW51eWJ5eHl5eHl5eHl5eHl5eHl5eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/LfpP2a7C4t2Le/giphy.gif" alt="Web Design">
+                        <div class="service-overlay-fx"></div>
+                    </div>
+                    <div class="service-content">
+                        <h4 style="margin-bottom: 10px; color: var(--accent-cyan);">01</h4>
+                        <h3>Digital Design</h3>
+                        
+                        <!-- List Style (Variant 3) -->
+                        <ul style="list-style: none; padding: 0; margin: 20px 0;">
+                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Рекламные баннеры
+                            </li>
+                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Постеры
+                            </li>
+                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Инфографика
+                            </li>
+                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Презентации
+                            </li>
+                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Лендинги
+                            </li>
+                        </ul>
+
+                        <!-- Footer Note with Neon // -->
+                        <p style="color: var(--text-muted); font-size: 0.85rem; font-style: italic; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--grid-line);">
+                            <span style="color: var(--accent-cyan); text-shadow: 0 0 8px var(--accent-cyan); margin-right: 5px; font-weight: bold;">//</span> 
+                            Широкий профиль креативных решений для вашего бизнеса.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="service-item">
+                    <div class="service-media">
+                         <!-- Placeholder GIF: Abstract Geometry -->
+                         <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3Z6cW51eWJ5eHl5eHl5eHl5eHl5eHl5eHl5eHl5eHl5eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKSjRrfPHouCITe/giphy.gif" alt="Branding">
+                         <div class="service-overlay-fx"></div>
+                    </div>
+                    <div class="service-content">
+                        <h4 style="margin-bottom: 10px; color: var(--accent-cyan);">02</h4>
+                        <h3>Branding</h3>
+                        
+                        <ul style="list-style: none; padding: 0; margin: 20px 0;">
+                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Визуальная айдентика
+                            </li>
+                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Логотипы
+                            </li>
+                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Брендбуки
+                            </li>
+                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Иллюстрации
+                            </li>
+                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Эмодзи
+                            </li>
+                        </ul>
+
+                        <p style="color: var(--text-muted); font-size: 0.85rem; font-style: italic; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--grid-line);">
+                            <span style="color: var(--accent-cyan); text-shadow: 0 0 8px var(--accent-cyan); margin-right: 5px; font-weight: bold;">//</span> 
+                            Создаем визуальный язык, на котором говорит ваш бренд.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="service-item">
+                    <div class="service-media">
+                         <!-- Placeholder GIF: 3D Motion -->
+                         <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeHl5eHl5eHl5eHl5eHl5eHl5eHl5eHl5eHl5eHl5eHl5eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l3vR16pONsV8cKkWk/giphy.gif" alt="CG & Motion">
+                         <div class="service-overlay-fx"></div>
+                    </div>
+                    <div class="service-content">
+                        <h4 style="margin-bottom: 10px; color: var(--accent-cyan);">03</h4>
+                        <h3>AI-Production</h3>
+                        
+                        <ul style="list-style: none; padding: 0; margin: 20px 0;">
+                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> AI-съемки
+                            </li>
+                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Рекламный медиаконтент
+                            </li>
+                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Художественные видео
+                            </li>
+                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Творческие креативы
+                            </li>
+                        </ul>
+
+                        <p style="color: var(--text-muted); font-size: 0.85rem; font-style: italic; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--grid-line);">
+                            <span style="color: var(--accent-cyan); text-shadow: 0 0 8px var(--accent-cyan); margin-right: 5px; font-weight: bold;">//</span> 
+                            Генерируем уникальный контент для ваших задач.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="service-item">
+                    <div class="service-media">
+                         <!-- Placeholder GIF: AI Neural -->
+                         <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbnZ5b2w0ZGR5M3Z6cW51eWJ5eHl5eHl5eHl5eHl5eHl5eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/26tn33aiTi1jkl6HC/giphy.gif" alt="AI Generation">
+                         <div class="service-overlay-fx"></div>
+                    </div>
+                    <div class="service-content">
+                        <h4 style="margin-bottom: 10px; color: var(--accent-cyan);">04</h4>
+                        <h3>Digital Support</h3>
+                        
+                        <ul style="list-style: none; padding: 0; margin: 20px 0;">
+                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Изображения
+                            </li>
+                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Видеоконтент
+                            </li>
+                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Тексты и статьи
+                            </li>
+                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Cайты и сервисы
+                            </li>
+                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Консультации 24/7
+                            </li>
+
+                        </ul>
+
+                        <p style="color: var(--text-muted); font-size: 0.85rem; font-style: italic; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--grid-line);">
+                            <span style="color: var(--accent-cyan); text-shadow: 0 0 8px var(--accent-cyan); margin-right: 5px; font-weight: bold;">//</span> 
+                            Полное контент-сопровождение вашего бизнеса по гибкой и удобной подписке.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- CASES -->
+    <section id="cases">
+        <div class="container" style="margin-bottom: 40px;">
+            <span class="subtitle">Портфолио</span>
+            <h2 class="section-title">Избранные Кейсы</h2>
+        </div>
+        
+        <div class="cases-grid">
+            <!-- Case 1 -->
+            <div class="case-item" onclick="expandCase(this)">
+                <div class="case-close-btn" onclick="collapseCase(event, this)">✕</div>
+                <div class="case-img" style="background: linear-gradient(45deg, #111, #222);">
+                    <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="case-info">
+                    <div class="case-tag">Digital design</div>
+                    <h3 class="case-title">Цифровой контент</h3>
+                    <div class="case-details-text">
+                        <p>Стильный контент для вашего бизнеса - создаем то, что нужно именно вам.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Case 2 -->
+            <div class="case-item" onclick="expandCase(this)">
+                <div class="case-close-btn" onclick="collapseCase(event, this)">✕</div>
+                <div class="case-img" style="background: linear-gradient(45deg, #050505, #1a2a4a);">
+                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="case-info">
+                    <div class="case-tag">AI</div>
+                    <h3 class="case-title">Нейровидео</h3>
+                    <div class="case-details-text">
+                        <p>Рекламные ролики, web-сериалы, видеоклипы и нейросетевая анимация.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Case 3 -->
+            <div class="case-item" onclick="expandCase(this)">
+                <div class="case-close-btn" onclick="collapseCase(event, this)">✕</div>
+                <div class="case-img" style="background: linear-gradient(45deg, #0a0a0a, #333);">
+                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="case-info">
+                    <div class="case-tag">Branding</div>
+                    <h3 class="case-title">Visual identity</h3>
+                    <div class="case-details-text">
+                        <p>Создание визуального языка вашего бренда - от логотипа и упаковки, до оформления ваших web-media</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Case 4 -->
+            <div class="case-item" onclick="expandCase(this)">
+                <div class="case-close-btn" onclick="collapseCase(event, this)">✕</div>
+                <div class="case-img" style="background: linear-gradient(45deg, #000, #112233);">
+                    <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" style="width:100%; height:100%; object-fit:cover;">
+                </div>
+                <div class="case-info">
+                    <div class="case-tag">Other</div>
+                    <h3 class="case-title">Other projects</h3>
+                    <div class="case-details-text">
+                        <p>Гибкий подход для ваших желаний - от создания лендингов до разработки мини-приложений.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PACKAGES -->
+    <section id="packages">
+        <div class="container">
+            <span class="subtitle">Стоимость</span>
+            <h2 class="section-title">Пакеты Услуг</h2>
+            
+            <div class="grid-3">
+                <div class="card">
+                    <div class="marker tl"></div>
+                    <h3>Start</h3>
+                    <span class="package-price">от 15 000 руб.</span>
+                    <a href="#contact" class="btn" style="width: 100%;">Выбрать</a>
+                </div>
+                <div class="card">
+                    <div class="marker tl"></div>
+                    <div class="marker br"></div>
+                    <h3>Business</h3>
+                    <span class="package-price">от 50 000 руб.</span>
+                    <a href="#contact" class="btn btn-primary" style="width: 100%;">Выбрать</a>
+                </div>
+                <div class="card">
+                    <div class="marker tr"></div>
+                    <div class="marker bl"></div>
+                    <h3>Individual</h3>
+                    <span class="package-price">Indiv.</span>
+                    <a href="#contact" class="btn" style="width: 100%;">Обсудить</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" style="text-align: center; padding: 150px 0;">
+        <div class="container">
+            <h2 class="section-title" style="font-size: clamp(2.5rem, 6vw, 5rem); margin-bottom: 40px;">Ready to Glow?</h2>
+            <p style="color: var(--text-muted); margin-bottom: 50px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Оставьте заявку, и мы свяжемся с вами в течение 24 часов.
+            </p>
+            <a href="mailto:hello@creax.digital" class="btn btn-primary" style="font-size: 1.2rem; padding: 20px 50px;">Начать проект</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <a href="#" class="footer-logo">CREAX.digital</a>
+            <div class="footer-links">
+                <a href="#">Instagram</a>
+                <a href="#">Behance</a>
+                <a href="#">Telegram</a>
+                <a href="#">Email</a>
+            </div>
+            <div class="footer-copyright">
+                <p>© 2025 CREAX Digital Agency.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        // 1. Case Logic
+        function expandCase(element) {
+            if (element.classList.contains('expanded')) return;
+            element.classList.add('expanded');
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function collapseCase(event, btn) {
+            event.stopPropagation();
+            const parent = btn.parentElement;
+            parent.classList.remove('expanded');
+            document.body.style.overflow = 'auto';
+        }
+
+        // 2. Mouse Glow Logic
+        const glow = document.querySelector('.cursor-glow');
+        document.addEventListener('mousemove', (e) => {
+            glow.style.left = e.clientX + 'px';
+            glow.style.top = e.clientY + 'px';
+        });
+
+        // 3. Canvas "Digital Dust" Logic
+        const canvas = document.getElementById('canvas-bg');
+        const ctx = canvas.getContext('2d');
+
+        let width, height;
+        let particles = [];
+        
+        // Settings
+        const particleCount = 70; // Количество частиц
+        const connectionDistance = 140; // Дистанция соединения
+        const mouseDistance = 200; // Радиус реакции на мышь
+
+        let mouse = { x: null, y: null };
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.x;
+            mouse.y = e.y;
+        });
+        
+        window.addEventListener('mouseleave', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        function resize() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.size = Math.random() * 2 + 1; // Square size
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Bounce off edges
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+
+                // Mouse interaction
+                if (mouse.x != null) {
+                    let dx = mouse.x - this.x;
+                    let dy = mouse.y - this.y;
+                    let distance = Math.sqrt(dx*dx + dy*dy);
+                    
+                    if (distance < mouseDistance) {
+                        const forceDirectionX = dx / distance;
+                        const forceDirectionY = dy / distance;
+                        const force = (mouseDistance - distance) / mouseDistance;
+                        // Gently push away
+                        const directionX = forceDirectionX * force * 0.6;
+                        const directionY = forceDirectionY * force * 0.6;
+                        this.vx -= directionX;
+                        this.vy -= directionY;
+                    }
+                }
+            }
+
+            draw() {
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.4)'; // White squares
+                ctx.fillRect(this.x, this.y, this.size, this.size);
+            }
+        }
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                // Draw connections
+                for (let j = i; j < particles.length; j++) {
+                    let dx = particles[i].x - particles[j].x;
+                    let dy = particles[i].y - particles[j].y;
+                    let distance = Math.sqrt(dx*dx + dy*dy);
+
+                    if (distance < connectionDistance) {
+                        ctx.beginPath();
+                        // Opacity based on distance
+                        let opacity = 1 - (distance / connectionDistance);
+                        ctx.strokeStyle = 'rgba(0, 240, 255,' + (opacity * 0.15) + ')'; // Cyan lines
+                        ctx.lineWidth = 1;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', () => {
+            resize();
+            initParticles();
+        });
+
+        // Init
+        resize();
+        initParticles();
+        animate();
+
+    </script>
+</body>
+</html>
