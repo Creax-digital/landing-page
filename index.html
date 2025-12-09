@@ -435,23 +435,6 @@
         filter: grayscale(100%) contrast(120%);
     }
 
-        .service-media video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Ключевое свойство: видео заполнит блок, обрезав лишнее */
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 0; /* Скрыто по умолчанию */
-    transition: opacity 0.5s ease; /* Плавное появление */
-    z-index: 0;
-}
-
-/* При наведении на карточку показываем видео */
-.service-item:hover .service-media video {
-    opacity: 1;
-}
-
     .service-overlay-fx {
         position: absolute;
         top: 0;
@@ -837,23 +820,14 @@
                 </div>
 
                 <!-- Service 2 -->
-                div class="service-item">
-    <div class="service-media">
-        <!-- ВИДЕО -->
-        <!-- muted: обязательно без звука -->
-        <!-- loop: зациклено -->
-        <!-- playsinline: чтобы не разворачивалось на iPhone -->
-        <!-- preload="none": не грузим видео сразу, чтобы сайт летал -->
-        <video muted loop playsinline class="hover-video" poster="">
-            <source src="BRANDING_WEB.mp4 type="video/mp4">
-        </video>
-        
-        <div class="service-overlay-fx"></div>
-    </div>
-    
-    <div class="service-content">
-        <!-- ВАШ ТЕКСТ (оставляем как было) -->
-        <h4 style="margin-bottom: 10px; color: var(--accent-cyan);">01</h4>
+                <div class="service-item">
+                    <div class="service-media">
+                         <!-- Placeholder GIF: Abstract Geometry -->
+                         <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3Z6cW51eWJ5eHl5eHl5eHl5eHl5eHl5eHl5eHl5eHl5eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKSjRrfPHouCITe/giphy.gif" alt="Branding">
+                         <div class="service-overlay-fx"></div>
+                    </div>
+                    <div class="service-content">
+                        <h4 style="margin-bottom: 10px; color: var(--accent-cyan);">02</h4>
                         <h3>Branding</h3>
                         
                         <ul style="list-style: none; padding: 0; margin: 20px 0;">
@@ -1223,28 +1197,5 @@
         animate();
 
     </script>
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Находим все карточки
-        const cards = document.querySelectorAll('.service-item');
-
-        cards.forEach(card => {
-            const video = card.querySelector('video');
-
-            if (video) {
-                // При наведении мыши
-                card.addEventListener('mouseenter', () => {
-                    video.play().catch(e => console.log("Ошибка автозапуска:", e));
-                });
-
-                // Когда мышь уходит
-                card.addEventListener('mouseleave', () => {
-                    video.pause();
-                    // video.currentTime = 0; // Раскомментируйте, если хотите сброс на начало
-                });
-            }
-        });
-    });
-</script>
 </body>
 </html>
