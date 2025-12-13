@@ -304,6 +304,22 @@
         text-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
+    .hero-subtitle {
+        font-family: 'Space Grotesk', sans-serif; /* Технический шрифт */
+    font-size: 1.1rem;
+    color: #e0e0e0;
+    margin-top: 25px;
+    margin-bottom: 0;
+    text-transform: uppercase; /* Делаем капсом для стиля */
+    letter-spacing: 0.1em;
+}
+    .separator {
+    color: var(--accent-cyan); /* Ваш голубой неон */
+    margin: 0 10px;            /* Отступы вокруг слэша */
+    font-weight: bold;
+    text-shadow: 0 0 10px var(--accent-cyan); /* Свечение */
+    }
+
     .hero-desc {
         font-family: 'Space Grotesk';
         color: var(--text-muted);
@@ -826,6 +842,16 @@
         /* --- 1. РАЗДЕЛЕНИЕ БЛОКОВ (РАМКИ И ОТСТУПЫ) --- */
         
         /* Убираем старую сплошную сетку и добавляем воздух */
+        .hero-subtitle {
+        font-size: 0.9rem; /* Чуть меньше на телефоне */
+        display: flex;
+        flex-wrap: wrap;   /* Если не влезет, перенесется */
+        justify-content: center;
+        gap: 5px;
+    }
+        .separator {
+        margin: 0 5px;
+    }
         .services-grid,
         .cases-grid,
         .grid-3 { 
@@ -997,6 +1023,12 @@
         <div class="hero-text">
     <div class="hero-desc">Generative Design Agency</div>
     <h1 class="hero-title">The Future<br>Is Neural</h1>
+            
+            <p class="hero-subtitle">
+                Дизайн <span class="separator">/</span> 
+                Брендинг <span class="separator">/</span> 
+                Видеоконтент
+            </p>
 
     <!-- ДОБАВИЛ КЛАСС "hero-meta" ДЛЯ УПРАВЛЕНИЯ ОТСТУПАМИ -->
     <div class="hero-meta">
