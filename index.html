@@ -893,14 +893,18 @@
             top: 20px; 
             right: 20px; 
             font-size: 2rem; 
-            background: rgba(0,0,0,0.5); /* Подложка, чтобы видно было везде */
+            background: rgba(0,0,0,0.5); 
             width: 40px;
             height: 40px;
-            display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            z-index: 2002; /* Поверх всего */
+            z-index: 2002;
+            
+            display: none; /* ВАЖНО: Скрыт по умолчанию! */
+        }
+         .case-item.expanded .case-close-btn {
+            display: flex;
         }
         
         .footer-links {
