@@ -246,20 +246,53 @@
         animation: pulseGlow 4s infinite alternate;
     }
 
-    .cube-frame {
+      .cube-frame {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        
+        /* Базовый цвет (тусклый) */
+        border: 1px solid rgba(0, 240, 255, 0.3);
+        
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 0 50px rgba(0, 240, 255, 0.05);
+        
+        /* Анимация 1: Плавное дыхание неона */
+        animation: neonBreath 4s infinite alternate ease-in-out;
+        
+        /* Для эффекта 3D */
+        box-shadow: 0 0 20px rgba(0, 240, 255, 0.05);
+    }
+
+    /* Элемент-призрак для Глитч-эффекта (появляется резко) */
+    .cube-frame::before {
+        content: '';
+        position: absolute;
+        top: -2px; left: -2px; right: -2px; bottom: -2px;
+        border: 2px solid #ff0055; /* Розовый сбой */
+        opacity: 0; /* Скрыт по умолчанию */
+        z-index: -1;
+        
+        /* Анимация 2: Резкий глитч раз в 6 секунд */
+        animation: glitchEffect 6s infinite linear;
+    }
+
+    /* Еще один призрак для белой вспышки */
+    .cube-frame::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        border: 1px solid #ffffff;
+        opacity: 0;
+        
+        /* Анимация 2: Тоже глитч, но с другой скоростью */
+        animation: glitchEffect 6s infinite linear reverse;
     }
     
-    .marker {
+     .marker {
         position: absolute;
         width: 10px;
         height: 10px;
@@ -268,16 +301,16 @@
     .marker::before, .marker::after {
         content: '';
         position: absolute;
-        background: var(--text-main);
-        transition: background 0.3s;
+        background: var(--accent-cyan); /* Сразу делаем их голубыми */
+        box-shadow: 0 0 5px var(--accent-cyan); /* Свечение */
     }
-    .marker::before { width: 100%; height: 1px; top: 50%; }
-    .marker::after { height: 100%; width: 1px; left: 50%; }
+    .marker::before { width: 100%; height: 2px; top: 50%; transform: translateY(-50%); }
+    .marker::after { height: 100%; width: 2px; left: 50%; transform: translateX(-50%); }
     
-    .tl { top: -5px; left: -5px; }
-    .tr { top: -5px; right: -5px; }
-    .bl { bottom: -5px; left: -5px; }
-    .br { bottom: -5px; right: -5px; }
+    .tl { top: -6px; left: -6px; }
+    .tr { top: -6px; right: -6px; }
+    .bl { bottom: -6px; left: -6px; }
+    .br { bottom: -6px; right: -6px; }
 
     /* --- ТЕКСТ ГЕРОЯ --- */
     .hero-text {
@@ -824,6 +857,46 @@
     @keyframes fadeInSlide {
         from { opacity: 0; transform: translateY(30px); }
         to { opacity: 1; transform: translateY(0); }
+    }
+
+        @keyframes neonBreath {
+        0% {
+            border-color: rgba(0, 240, 255, 0.2);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.1), inset 0 0 10px rgba(0, 240, 255, 0.05);
+        }
+        100% {
+            border-color: rgba(0, 240, 255, 0.8);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.4), inset 0 0 20px rgba(0, 240, 255, 0.2);
+        }
+    }
+
+    /* Анимация резкого кибер-сбоя */
+    @keyframes glitchEffect {
+        0%, 92% {
+            opacity: 0;
+            transform: translate(0) skew(0);
+        }
+        93% {
+            opacity: 0.8;
+            transform: translate(-3px, 2px) skew(2deg); /* Сдвиг влево */
+            filter: hue-rotate(90deg);
+        }
+        94% {
+            opacity: 0;
+            transform: translate(0);
+        }
+        96% {
+            opacity: 1;
+            transform: translate(3px, -2px) skew(-2deg); /* Сдвиг вправо */
+            border-color: #fff; /* Белая вспышка */
+        }
+        97% {
+            opacity: 0;
+            transform: translate(0);
+        }
+        100% {
+            opacity: 0;
+        }
     }
 
     /* --- RESPONSIVE / MEDIA QUERIES --- */
