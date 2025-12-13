@@ -176,7 +176,7 @@
         justify-content: center;
         padding: 16px 32px;
         font-family: 'Space Grotesk', sans-serif;
-        font-weight: 700;
+        font-weight: 500;
         text-transform: uppercase;
         text-decoration: none;
         border: 1px solid var(--border-light);
@@ -315,7 +315,7 @@
         backdrop-filter: blur(2px);
     }
 
-    /* БЛОК ДЛЯ FIG/STATUS */
+    /* БЛОК ДЛЯ FIG/STATUS (Под квадратом) */
     .hero-meta {
         display: flex;
         justify-content: space-between;
@@ -388,10 +388,9 @@
         font-size: 0.95rem;
     }
 
-    /* СЕТКА УСЛУГ (4 КОЛОНКИ НА ПК) */
     .services-grid {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: 1px;
         background: var(--border-dim);
         border: 1px solid var(--border-dim);
@@ -400,15 +399,11 @@
     .service-item {
         background: rgba(5, 5, 5, 0.8);
         backdrop-filter: blur(5px);
-        padding: 30px 20px;
+        padding: 40px;
         position: relative;
         overflow: hidden;
         transition: 0.3s;
         cursor: default;
-        height: 600px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
     }
 
     .service-content {
@@ -417,7 +412,6 @@
         transition: transform 0.4s ease;
     }
 
-    /* Видео внутри услуг */
     .service-media {
         position: absolute;
         top: 0;
@@ -425,24 +419,16 @@
         width: 100%;
         height: 100%;
         z-index: 1;
-        opacity: 0; /* Скрыто до наведения, если не используется poster */
+        opacity: 0;
         transition: opacity 0.5s ease;
         pointer-events: none;
     }
 
-    .service-media video,
     .service-media img {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        position: absolute;
-        top: 0;
-        left: 0;
-    }
-
-    /* Видео становится видимым при наведении */
-    .service-item:hover .service-media {
-        opacity: 1;
+        filter: grayscale(100%) contrast(120%);
     }
 
     .service-overlay-fx {
@@ -455,7 +441,10 @@
             linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.4)), 
             repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 240, 255, 0.1) 3px);
         mix-blend-mode: overlay;
-        z-index: 2;
+    }
+
+    .service-item:hover .service-media {
+        opacity: 1;
     }
 
     .service-item:hover .service-content {
@@ -521,7 +510,7 @@
         text-transform: uppercase;
     }
 
-    /* --- EXPANDED CASE (ОТКРЫТЫЙ ВИД) --- */
+    /* --- EXPANDED CASE (ОТКРЫТЫЙ ВИД - НОВЫЙ ДИЗАЙН) --- */
     
     .case-item.expanded {
         position: fixed;
@@ -533,13 +522,13 @@
         padding: 0;
         background: #000;
         cursor: auto;
-        /* Сбрасываем стили сетки */
+        /* Переопределяем стили сетки */
         aspect-ratio: auto;
         flex-direction: row; 
         align-items: center;
     }
 
-    /* Фон кейса при открытии */
+    /* Фон кейса (затемняем сильнее при открытии) */
     .case-img-bg {
         position: absolute;
         top: 0;
@@ -562,7 +551,7 @@
         transform: scale(1.1);
     }
 
-    /* СЕТКА ВНУТРИ ОТКРЫТОГО КЕЙСА */
+    /* Сетка разметки внутри открытого кейса */
     .case-expanded-layout {
         position: relative;
         z-index: 10;
@@ -580,6 +569,7 @@
         transition: opacity 0.5s;
     }
 
+    /* Анимация появления */
     .case-item.expanded .case-expanded-layout {
         animation: fadeInSlide 0.8s 0.2s forwards;
     }
@@ -614,7 +604,7 @@
         align-items: center;
     }
 
-    /* РАМКА ГАЛЕРЕИ */
+    /* --- РАМКА ГАЛЕРЕИ --- */
     .gallery-frame {
         position: relative;
         width: 100%;
@@ -642,7 +632,7 @@
         opacity: 1;
     }
 
-    /* CRT ЭФФЕКТ */
+    /* --- CRT ЭФФЕКТ (СЕТКА) --- */
     .crt-overlay-gallery {
         position: absolute;
         top: 0;
@@ -712,7 +702,7 @@
         transform: rotate(90deg);
     }
 
-    /* === ЛОГИКА ПЕРЕКЛЮЧЕНИЯ === */
+    /* === ЛОГИКА ПЕРЕКЛЮЧЕНИЯ (ОЧЕНЬ ВАЖНО) === */
     
     /* 1. По умолчанию скрываем "большой" контент */
     .case-expanded-layout, 
@@ -810,91 +800,71 @@
         to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ========================================= */
-    /* === МОБИЛЬНАЯ ВЕРСИЯ И АДАПТАЦИЯ === */
-    /* ========================================= */
+    /* --- RESPONSIVE / MEDIA QUERIES --- */
     
-    /* 1. Планшеты (промежуточный вариант) */
-    @media (max-width: 1200px) {
-        .services-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-    /* 2. Мобильные устройства (Основной фикс для кейсов и шрифтов) */
-    @media (max-width: 900px) {
+    /* Адаптив для кейса (галерея и текст) */
+     @media (max-width: 900px) {
         
-        /* Сетка кейсов - в 1 колонку */
+        /* 1. Настройка сетки кейсов (Grid View) */
         .cases-grid { 
             grid-template-columns: 1fr; 
         }
-
-        /* Уменьшаем заголовок кейса в закрытом виде */
+        
+        /* Исправляем размер заголовков в закрытом виде */
         .case-title {
-            font-size: 1.5rem;
-            word-wrap: break-word;
+            font-size: 1.5rem; /* Уменьшаем, чтобы влезло */
+            word-wrap: break-word; /* Перенос длинных слов */
         }
         
-        /* --- ОТКРЫТЫЙ КЕЙС НА ТЕЛЕФОНЕ --- */
+        /* 2. Настройка открытого кейса (Expanded View) */
         .case-item.expanded {
-            overflow-y: auto; /* Включаем скролл */
-            align-items: flex-start; /* Прижимаем контент к верху */
+            /* Разрешаем скролл, если контент не влезает в экран */
+            overflow-y: auto; 
             padding: 0;
+            align-items: flex-start; /* Прижимаем к верху */
         }
 
         .case-expanded-layout {
-            flex-direction: column-reverse; /* Галерея сверху, текст снизу */
-            justify-content: flex-end; 
-            padding: 80px 20px 40px 20px;
+            flex-direction: column-reverse; /* Галерея сверху, Текст снизу */
+            justify-content: flex-end; /* Начинаем снизу */
+            padding: 80px 20px 40px 20px; /* Отступы (сверху место под крестик) */
             gap: 30px;
-            height: auto;
+            height: auto; /* Высота авто, чтобы работал скролл */
             min-height: 100%;
         }
 
-        /* Исправляем гигантский заголовок */
+        /* 3. Исправляем гигантский текст */
         .case-item.expanded .case-title {
+            /* ОЧЕНЬ ВАЖНО: Уменьшаем шрифт для телефона */
             font-size: 2rem !important; 
             line-height: 1.1;
             margin-bottom: 15px;
             word-wrap: break-word;
         }
         
+        /* Текст описания поменьше */
         .case-details-text {
             font-size: 1rem;
             line-height: 1.5;
         }
 
-        /* Галерея становится квадратной */
+        /* 4. Настройка Галереи */
         .case-col-gallery {
             width: 100%;
             height: auto;
-            flex: none;
+            flex: none; /* Чтобы не сжималась */
         }
         
         .gallery-frame {
             width: 100%;
-            max-width: 100%;
+            max-width: 350px; /* Ограничиваем ширину */
+            /* Делаем квадратной или чуть прямоугольной (4/5) */
             aspect-ratio: 1/1; 
             height: auto;
             margin: 0 auto;
         }
 
-        /* Крестик с подложкой */
-        .case-close-btn { 
-            top: 20px; 
-            right: 20px; 
-            font-size: 2rem; 
-            background: rgba(0,0,0,0.5); 
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            z-index: 2002;
-        }
-
-        /* --- ОСТАЛЬНЫЕ АДАПТАЦИИ (HERO и т.д.) --- */
+        /* 5. Остальные адаптации */
         .hero-title { 
             font-size: 3rem !important;
             line-height: 1.1;
@@ -918,13 +888,19 @@
 
         .grid-3 { grid-template-columns: 1fr; }
         
-        /* Услуги в 1 колонку */
-        .services-grid {
-            grid-template-columns: 1fr;
-            height: auto;
-        }
-        .service-item {
-            height: 500px;
+        /* Крестик закрытия */
+        .case-close-btn { 
+            top: 20px; 
+            right: 20px; 
+            font-size: 2rem; 
+            background: rgba(0,0,0,0.5); /* Подложка, чтобы видно было везде */
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            z-index: 2002; /* Поверх всего */
         }
         
         .footer-links {
