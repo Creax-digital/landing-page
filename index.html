@@ -455,7 +455,172 @@
         transform: translateY(-5px);
         text-shadow: 0 2px 10px rgba(0,0,0,0.8);
     }
+        
+        /* --- ОБНОВЛЕННЫЕ СТИЛИ ДЛЯ КЕЙСОВ --- */
 
+/* Фон кейса (затемняем сильнее при открытии) */
+.case-img-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+.case-img-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.5s;
+    filter: grayscale(100%);
+}
+.case-item.expanded .case-img-bg img {
+    opacity: 0.15; /* Делаем фон очень темным, чтобы контент читался */
+    filter: blur(10px) grayscale(100%);
+    transform: scale(1.1);
+}
+
+/* Сетка разметки внутри открытого кейса */
+.case-expanded-layout {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: space-between;
+    gap: 60px;
+    opacity: 0;
+    pointer-events: none; /* Чтобы не мешал клику при закрытом */
+    transition: opacity 0.5s;
+}
+
+/* Показываем контент только когда класс expanded */
+.case-item.expanded .case-expanded-layout {
+    opacity: 1;
+    pointer-events: auto;
+    animation: fadeInSlide 0.8s 0.2s forwards;
+}
+
+/* Левая колонка (Текст) */
+.case-col-text {
+    flex: 1;
+    max-width: 600px;
+}
+
+/* Правая колонка (Галерея) */
+.case-col-gallery {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --- РАМКА ГАЛЕРЕИ (КАК НА РЕФЕРЕНСЕ) --- */
+.gallery-frame {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    aspect-ratio: 4/5; /* Вертикальный формат */
+    border: 3px solid var(--accent-cyan);
+    border-radius: 30px; /* Скругленные углы */
+    box-shadow: 0 0 30px rgba(0, 240, 255, 0.2), inset 0 0 20px rgba(0, 240, 255, 0.1);
+    overflow: hidden;
+    background: #000;
+}
+
+/* Слайды */
+.gallery-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+.gallery-slide.active {
+    opacity: 1;
+}
+
+/* --- CRT ЭФФЕКТ (СЕТКА) --- */
+.crt-overlay-gallery {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5; /* Поверх фото, под кнопками */
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.15),
+        rgba(0, 0, 0, 0.15) 1px,
+        transparent 1px,
+        transparent 3px
+    );
+    background-size: 100% 3px;
+    mix-blend-mode: overlay;
+    box-shadow: inset 0 0 50px rgba(0,0,0,0.8); /* Виньетка внутри рамки */
+}
+
+/* Кнопки переключения */
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.5);
+    border: 1px solid var(--accent-cyan);
+    color: var(--accent-cyan);
+    padding: 15px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+    user-select: none;
+}
+.slider-btn:hover {
+    background: var(--accent-cyan);
+    color: #000;
+    box-shadow: 0 0 15px var(--accent-cyan);
+}
+.prev { left: 20px; }
+.next { right: 20px; }
+
+/* Адаптив для мобильных */
+@media (max-width: 900px) {
+    .case-expanded-layout {
+        flex-direction: column-reverse; /* Галерея сверху, текст снизу */
+        justify-content: center;
+        padding-top: 60px; /* Место под крестик */
+    }
+    .case-col-gallery {
+        width: 100%;
+        height: 400px;
+    }
+    .gallery-frame {
+        max-width: 100%;
+        height: 100%;
+    }
+    .case-col-text {
+        text-align: left;
+    }
+    .case-title {
+        font-size: 2.5rem !important; /* Принудительно уменьшаем заголовок */
+    }
+}
+
+
+        
     .cases-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -1225,5 +1390,46 @@
         animate();
 
     </script>
+
+<script>
+    // Функция переключения слайдов
+    function changeSlide(event, direction) {
+        // 1. Останавливаем всплытие, чтобы клик не закрыл кейс
+        event.stopPropagation();
+        
+        // 2. Находим кнопку, на которую нажали
+        const btn = event.target.closest('.slider-btn');
+        if (!btn) return;
+
+        // 3. Находим родительскую рамку галереи
+        const gallery = btn.closest('.gallery-frame');
+        
+        // 4. Собираем все картинки внутри этой рамки
+        const slides = gallery.querySelectorAll('.gallery-slide');
+        
+        // 5. Ищем, какая картинка сейчас активна
+        let activeIndex = 0;
+        slides.forEach((slide, index) => {
+            if (slide.classList.contains('active')) {
+                activeIndex = index;
+                slide.classList.remove('active'); // Скрываем текущую
+            }
+        });
+
+        // 6. Вычисляем индекс следующей
+        let newIndex = activeIndex + direction;
+
+        // Зацикливание (если конец -> в начало, если начало -> в конец)
+        if (newIndex >= slides.length) {
+            newIndex = 0;
+        } else if (newIndex < 0) {
+            newIndex = slides.length - 1;
+        }
+
+        // 7. Показываем новую картинку
+        slides[newIndex].classList.add('active');
+    }
+</script>
+    
 </body>
 </html>
