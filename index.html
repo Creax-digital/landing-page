@@ -223,7 +223,7 @@
         border-bottom: none;
     }
 
-    /* КВАДРАТ (Смещен вверх) */
+    /* КВАДРАТ */
     .cube-wrapper {
         position: absolute;
         width: 400px;
@@ -300,7 +300,6 @@
         font-size: clamp(3rem, 8vw, 6rem);
         line-height: 0.9;
         margin-top: 20px;
-        /* Убрали margin-bottom, теперь отступ делает блок ниже */
         letter-spacing: -0.04em;
         text-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
@@ -316,20 +315,18 @@
         backdrop-filter: blur(2px);
     }
 
-    /* НОВЫЙ БЛОК ДЛЯ FIG/STATUS */
+    /* БЛОК ДЛЯ FIG/STATUS (Под квадратом) */
     .hero-meta {
         display: flex;
         justify-content: space-between;
         width: 100%;
-        max-width: 380px; /* Ширина соответствует квадрату */
+        max-width: 380px; 
         font-family: monospace;
         font-size: 10px;
         color: var(--text-muted);
         opacity: 0.7;
-        
-        /* ВАЖНЫЕ ОТСТУПЫ */
-        margin-top: 120px;    /* Сдвигает этот текст вниз, под линию квадрата */
-        margin-bottom: 60px; /* Сдвигает кнопки еще ниже */
+        margin-top: 120px;    
+        margin-bottom: 60px; 
     }
 
     .hero-buttons {
@@ -337,10 +334,9 @@
         gap: 20px;
         justify-content: center;
         flex-wrap: wrap;
-        /* margin-top здесь больше не нужен, его создает hero-meta */
     }
 
-    /* --- ОСТАЛЬНЫЕ СТИЛИ (Без изменений) --- */
+    /* --- КАРТОЧКИ УСЛУГ И О НАС --- */
     .grid-3 {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -456,171 +452,7 @@
         text-shadow: 0 2px 10px rgba(0,0,0,0.8);
     }
         
-        /* --- ОБНОВЛЕННЫЕ СТИЛИ ДЛЯ КЕЙСОВ --- */
-
-/* Фон кейса (затемняем сильнее при открытии) */
-.case-img-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    pointer-events: none;
-}
-.case-img-bg img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: 0.5s;
-    filter: grayscale(100%);
-}
-.case-item.expanded .case-img-bg img {
-    opacity: 0.15; /* Делаем фон очень темным, чтобы контент читался */
-    filter: blur(10px) grayscale(100%);
-    transform: scale(1.1);
-}
-
-/* Сетка разметки внутри открытого кейса */
-.case-expanded-layout {
-    position: relative;
-    z-index: 10;
-    display: flex;
-    width: 100%;
-    height: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
-    align-items: center;
-    justify-content: space-between;
-    gap: 60px;
-    opacity: 0;
-    pointer-events: none; /* Чтобы не мешал клику при закрытом */
-    transition: opacity 0.5s;
-}
-
-/* Показываем контент только когда класс expanded */
-.case-item.expanded .case-expanded-layout {
-    opacity: 1;
-    pointer-events: auto;
-    animation: fadeInSlide 0.8s 0.2s forwards;
-}
-
-/* Левая колонка (Текст) */
-.case-col-text {
-    flex: 1;
-    max-width: 600px;
-}
-
-/* Правая колонка (Галерея) */
-.case-col-gallery {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* --- РАМКА ГАЛЕРЕИ (КАК НА РЕФЕРЕНСЕ) --- */
-.gallery-frame {
-    position: relative;
-    width: 100%;
-    max-width: 500px;
-    aspect-ratio: 4/5; /* Вертикальный формат */
-    border: 3px solid var(--accent-cyan);
-    border-radius: 30px; /* Скругленные углы */
-    box-shadow: 0 0 30px rgba(0, 240, 255, 0.2), inset 0 0 20px rgba(0, 240, 255, 0.1);
-    overflow: hidden;
-    background: #000;
-}
-
-/* Слайды */
-.gallery-slide {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
-.gallery-slide.active {
-    opacity: 1;
-}
-
-/* --- CRT ЭФФЕКТ (СЕТКА) --- */
-.crt-overlay-gallery {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 5; /* Поверх фото, под кнопками */
-    pointer-events: none;
-    background: repeating-linear-gradient(
-        0deg,
-        rgba(0, 0, 0, 0.15),
-        rgba(0, 0, 0, 0.15) 1px,
-        transparent 1px,
-        transparent 3px
-    );
-    background-size: 100% 3px;
-    mix-blend-mode: overlay;
-    box-shadow: inset 0 0 50px rgba(0,0,0,0.8); /* Виньетка внутри рамки */
-}
-
-/* Кнопки переключения */
-.slider-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0,0,0,0.5);
-    border: 1px solid var(--accent-cyan);
-    color: var(--accent-cyan);
-    padding: 15px;
-    cursor: pointer;
-    z-index: 10;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: 0.3s;
-    user-select: none;
-}
-.slider-btn:hover {
-    background: var(--accent-cyan);
-    color: #000;
-    box-shadow: 0 0 15px var(--accent-cyan);
-}
-.prev { left: 20px; }
-.next { right: 20px; }
-
-/* Адаптив для мобильных */
-@media (max-width: 900px) {
-    .case-expanded-layout {
-        flex-direction: column-reverse; /* Галерея сверху, текст снизу */
-        justify-content: center;
-        padding-top: 60px; /* Место под крестик */
-    }
-    .case-col-gallery {
-        width: 100%;
-        height: 400px;
-    }
-    .gallery-frame {
-        max-width: 100%;
-        height: 100%;
-    }
-    .case-col-text {
-        text-align: left;
-    }
-    .case-title {
-        font-size: 2.5rem !important; /* Принудительно уменьшаем заголовок */
-    }
-}
-
-
-        
+    /* --- CASES GRID (БАЗОВЫЙ ВИД В СЕТКЕ) --- */
     .cases-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -678,6 +510,8 @@
         text-transform: uppercase;
     }
 
+    /* --- EXPANDED CASE (ОТКРЫТЫЙ ВИД - НОВЫЙ ДИЗАЙН) --- */
+    
     .case-item.expanded {
         position: fixed;
         top: 0;
@@ -685,11 +519,65 @@
         width: 100vw;
         height: 100vh;
         z-index: 2000;
-        padding: 80px;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
+        padding: 0;
         background: #000;
+        cursor: auto;
+        /* Переопределяем стили сетки */
+        aspect-ratio: auto;
+        flex-direction: row; 
+        align-items: center;
+    }
+
+    /* Фон кейса (затемняем сильнее при открытии) */
+    .case-img-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+    }
+    .case-img-bg img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: 0.5s;
+        filter: grayscale(100%);
+    }
+    .case-item.expanded .case-img-bg img {
+        opacity: 0.15;
+        filter: blur(10px) grayscale(100%);
+        transform: scale(1.1);
+    }
+
+    /* Сетка разметки внутри открытого кейса */
+    .case-expanded-layout {
+        position: relative;
+        z-index: 10;
+        display: flex;
+        width: 100%;
+        height: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
+        align-items: center;
+        justify-content: space-between;
+        gap: 60px;
+        padding: 40px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.5s;
+    }
+
+    /* Анимация появления */
+    .case-item.expanded .case-expanded-layout {
+        animation: fadeInSlide 0.8s 0.2s forwards;
+    }
+
+    /* Левая колонка (Текст) */
+    .case-col-text {
+        flex: 1;
+        max-width: 600px;
     }
 
     .case-item.expanded .case-title {
@@ -700,7 +588,6 @@
     }
 
     .case-details-text {
-        display: none;
         font-size: 1.2rem;
         color: #ddd;
         margin-top: 20px;
@@ -709,10 +596,92 @@
         padding-left: 20px;
     }
 
-    .case-item.expanded .case-details-text {
-        display: block;
+    /* Правая колонка (Галерея) */
+    .case-col-gallery {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
+    /* --- РАМКА ГАЛЕРЕИ --- */
+    .gallery-frame {
+        position: relative;
+        width: 100%;
+        max-width: 500px;
+        aspect-ratio: 4/5;
+        border: 3px solid var(--accent-cyan);
+        border-radius: 30px;
+        box-shadow: 0 0 30px rgba(0, 240, 255, 0.2), inset 0 0 20px rgba(0, 240, 255, 0.1);
+        overflow: hidden;
+        background: #000;
+    }
+
+    /* Слайды */
+    .gallery-slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+    }
+    .gallery-slide.active {
+        opacity: 1;
+    }
+
+    /* --- CRT ЭФФЕКТ (СЕТКА) --- */
+    .crt-overlay-gallery {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 5;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.15),
+            rgba(0, 0, 0, 0.15) 1px,
+            transparent 1px,
+            transparent 3px
+        );
+        background-size: 100% 3px;
+        mix-blend-mode: overlay;
+        box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
+    }
+
+    /* Кнопки переключения */
+    .slider-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0,0,0,0.5);
+        border: 1px solid var(--accent-cyan);
+        color: var(--accent-cyan);
+        padding: 15px;
+        cursor: pointer;
+        z-index: 10;
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.3s;
+        user-select: none;
+    }
+    .slider-btn:hover {
+        background: var(--accent-cyan);
+        color: #000;
+        box-shadow: 0 0 15px var(--accent-cyan);
+    }
+    .prev { left: 20px; }
+    .next { right: 20px; }
+
+    /* Кнопка закрытия */
     .case-close-btn {
         position: absolute;
         top: 40px;
@@ -722,12 +691,10 @@
         -webkit-text-stroke: 1px var(--text-main);
         cursor: pointer;
         z-index: 2001;
-        display: none;
         font-family: 'Space Grotesk';
         line-height: 1;
         transition: 0.3s;
     }
-
     .case-close-btn:hover {
         color: var(--accent-cyan);
         -webkit-text-stroke: 1px var(--accent-cyan);
@@ -735,10 +702,30 @@
         transform: rotate(90deg);
     }
 
-    .case-item.expanded .case-close-btn {
-        display: block;
+    /* === ЛОГИКА ПЕРЕКЛЮЧЕНИЯ (ОЧЕНЬ ВАЖНО) === */
+    
+    /* 1. По умолчанию скрываем "большой" контент */
+    .case-expanded-layout, 
+    .case-img-bg,
+    .case-close-btn {
+        display: none; 
     }
 
+    /* 2. Когда кейс открыт: показываем новый контент */
+    .case-item.expanded .case-expanded-layout,
+    .case-item.expanded .case-img-bg,
+    .case-item.expanded .case-close-btn {
+        display: flex; 
+        pointer-events: auto;
+    }
+
+    /* 3. Когда кейс открыт: скрываем старую обложку */
+    .case-item.expanded .case-img,
+    .case-item.expanded .case-info {
+        display: none; 
+    }
+
+    /* --- FOOTER & PACKAGES --- */
     .package-list {
         list-style: none;
         margin: 20px 0 40px 0;
@@ -813,7 +800,34 @@
         to { opacity: 1; transform: translateY(0); }
     }
 
-    /* --- RESPONSIVE --- */
+    /* --- RESPONSIVE / MEDIA QUERIES --- */
+    
+    /* Адаптив для кейса (галерея и текст) */
+    @media (max-width: 900px) {
+        .case-expanded-layout {
+            flex-direction: column-reverse; /* Галерея сверху, текст снизу */
+            justify-content: center;
+            padding-top: 80px;
+            gap: 30px;
+        }
+        .case-col-gallery {
+            width: 100%;
+            height: auto;
+        }
+        .gallery-frame {
+            max-width: 100%;
+            height: 400px;
+        }
+        .case-col-text {
+            text-align: left;
+            width: 100%;
+        }
+        .case-item.expanded .case-title {
+            font-size: 2.5rem !important;
+        }
+    }
+
+    /* Общий адаптив для телефонов */
     @media (max-width: 768px) {
         .hero-title { 
             font-size: 40px !important;
@@ -829,17 +843,14 @@
             top: 35%;
         }
         
-        /* Мобильные отступы для текста под квадратом */
         .hero-meta {
-            max-width: 270px; /* Сужаем под маленький квадрат */
-            margin-top: 60px; /* Поменьше отступ, так как квадрат меньше */
+            max-width: 270px;
+            margin-top: 60px;
             margin-bottom: 40px;
         }
 
         .grid-3 { grid-template-columns: 1fr; }
         .cases-grid { grid-template-columns: 1fr; }
-        .case-item.expanded { padding: 30px; }
-        .case-item.expanded .case-title { font-size: 2.5rem; }
         .case-close-btn { top: 20px; right: 20px; font-size: 2rem; }
         
         .footer-links {
@@ -1090,19 +1101,33 @@
         </div>
         
         <div class="cases-grid">
-            <!-- Case 1 -->
-            <!-- Внутри <div class="case-item" onclick="expandCase(this)"> -->
+            
+           <!-- Case 1 -->
+<div class="case-item" onclick="expandCase(this)">
+    
+    <!-- === ЧАСТЬ 1: ОБЛОЖКА (Видна, когда кейс закрыт) === -->
+    <!-- Это то, что было раньше. Оно нужно для сетки! -->
+    <div class="case-img">
+         <!-- Картинка для превью в сетке -->
+         <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80">
+    </div>
+    <div class="case-info">
+         <div class="case-tag">Digital design</div>
+         <h3 class="case-title">Визуальные материалы</h3>
+         <!-- Короткое описание для сетки (опционально) -->
+    </div>
 
+    <!-- === ЧАСТЬ 2: ВНУТРЕННОСТИ (Видны, когда кейс открыт) === -->
+    
     <div class="case-close-btn" onclick="collapseCase(event, this)">✕</div>
     
-    <!-- Фоновая картинка (размытая подложка) -->
+    <!-- Фоновая картинка для открытого вида -->
     <div class="case-img-bg">
         <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80">
     </div>
 
-    <!-- Контейнер для развернутого вида -->
+    <!-- Контейнер с галереей и текстом -->
     <div class="case-expanded-layout">
-        
         <!-- Левая колонка: Текст -->
         <div class="case-col-text">
             <div class="case-tag">Digital design</div>
@@ -1116,22 +1141,18 @@
         <!-- Правая колонка: Галерея -->
         <div class="case-col-gallery">
             <div class="gallery-frame">
-                <!-- CRT Эффект (поверх фото) -->
                 <div class="crt-overlay-gallery"></div>
                 
-                <!-- Слайды -->
-                <!-- slide active = текущая картинка -->
                 <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80" class="gallery-slide active">
                 <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80" class="gallery-slide">
                 <img src="https://images.unsplash.com/photo-1614728853913-1e2221663b6a?auto=format&fit=crop&w=800&q=80" class="gallery-slide">
                 
-                <!-- Кнопки управления -->
-                <!-- stopPropagation важен, чтобы не закрывался кейс при клике -->
                 <button class="slider-btn prev" onclick="changeSlide(event, -1)">&#10094;</button>
                 <button class="slider-btn next" onclick="changeSlide(event, 1)">&#10095;</button>
             </div>
         </div>
     </div>
+</div>
 
             <!-- Case 2 -->
             <div class="case-item" onclick="expandCase(this)">
