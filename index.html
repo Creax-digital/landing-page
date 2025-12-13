@@ -802,69 +802,123 @@
 
     /* --- RESPONSIVE / MEDIA QUERIES --- */
     
-    /* Адаптив для кейса (галерея и текст) */
-     @media (max-width: 900px) {
-        
-        /* 1. Настройка сетки кейсов (Grid View) */
-        .cases-grid { 
-            grid-template-columns: 1fr; 
+    /* ========================================= */
+    /* === МОБИЛЬНАЯ ВЕРСИЯ (С ГОЛУБЫМИ РАМКАМИ) === */
+    /* ========================================= */
+    
+    @media (max-width: 1200px) {
+        .services-grid {
+            grid-template-columns: repeat(2, 1fr);
         }
+    }
+
+    @media (max-width: 900px) {
         
-        /* Исправляем размер заголовков в закрытом виде */
+        /* --- 1. РАЗДЕЛЕНИЕ БЛОКОВ (РАМКИ И ОТСТУПЫ) --- */
+        
+        /* Убираем старую сплошную сетку и добавляем воздух */
+        .services-grid,
+        .cases-grid,
+        .grid-3 { 
+            grid-template-columns: 1fr; /* Одна колонка */
+            display: flex;              /* Переключаем на флекс для колонок */
+            flex-direction: column;     /* Вертикальный список */
+            gap: 25px;                  /* Отступ между блоками (ЧТОБЫ НЕ СЛИПАЛИСЬ) */
+            border: none;               /* Убираем внешние границы сеток */
+            background: transparent;
+        }
+
+        /* Стиль для ВСЕХ карточек на телефоне (Услуги, Кейсы, О нас) */
+        .service-item,
+        .case-item,
+        .card {
+            /* === ГОЛУБАЯ РАМКА === */
+            border: 1px solid rgba(0, 240, 255, 0.4); 
+            
+            /* Легкое свечение рамки */
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.1); 
+            
+            /* Скругление углов (опционально, выглядит мягче) */
+            border-radius: 12px; 
+            
+            /* Отступ внутри */
+            padding: 30px;
+        }
+
+        /* --- 2. ИСПРАВЛЕНИЯ ДЛЯ КЕЙСОВ --- */
+
         .case-title {
-            font-size: 1.5rem; /* Уменьшаем, чтобы влезло */
-            word-wrap: break-word; /* Перенос длинных слов */
-        }
-        
-        /* 2. Настройка открытого кейса (Expanded View) */
-        .case-item.expanded {
-            /* Разрешаем скролл, если контент не влезает в экран */
-            overflow-y: auto; 
-            padding: 0;
-            align-items: flex-start; /* Прижимаем к верху */
-        }
-
-        .case-expanded-layout {
-            flex-direction: column-reverse; /* Галерея сверху, Текст снизу */
-            justify-content: flex-end; /* Начинаем снизу */
-            padding: 80px 20px 40px 20px; /* Отступы (сверху место под крестик) */
-            gap: 30px;
-            height: auto; /* Высота авто, чтобы работал скролл */
-            min-height: 100%;
-        }
-
-        /* 3. Исправляем гигантский текст */
-        .case-item.expanded .case-title {
-            /* ОЧЕНЬ ВАЖНО: Уменьшаем шрифт для телефона */
-            font-size: 2rem !important; 
-            line-height: 1.1;
-            margin-bottom: 15px;
+            font-size: 1.5rem;
             word-wrap: break-word;
         }
         
-        /* Текст описания поменьше */
+        /* ОТКРЫТЫЙ КЕЙС */
+        .case-item.expanded {
+            overflow-y: auto; 
+            align-items: flex-start; 
+            padding: 0;
+            
+            /* Убираем рамку и скругление, когда кейс открыт на весь экран */
+            border: none;
+            border-radius: 0;
+            gap: 0;
+        }
+
+        .case-expanded-layout {
+            flex-direction: column-reverse; 
+            justify-content: flex-end; 
+            padding: 80px 20px 40px 20px;
+            gap: 30px;
+            height: auto;
+            min-height: 100%;
+        }
+
+        .case-item.expanded .case-title {
+            font-size: 2rem !important; 
+            line-height: 1.1;
+            margin-bottom: 15px;
+        }
+        
         .case-details-text {
             font-size: 1rem;
             line-height: 1.5;
         }
 
-        /* 4. Настройка Галереи */
         .case-col-gallery {
             width: 100%;
             height: auto;
-            flex: none; /* Чтобы не сжималась */
+            flex: none;
         }
         
         .gallery-frame {
             width: 100%;
-            max-width: 350px; /* Ограничиваем ширину */
-            /* Делаем квадратной или чуть прямоугольной (4/5) */
+            max-width: 100%;
             aspect-ratio: 1/1; 
             height: auto;
             margin: 0 auto;
         }
 
-        /* 5. Остальные адаптации */
+        /* КРЕСТИК ЗАКРЫТИЯ */
+        .case-close-btn { 
+            top: 20px; 
+            right: 20px; 
+            font-size: 2rem; 
+            background: rgba(0,0,0,0.5); 
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            z-index: 2002;
+            display: none; 
+        }
+
+        .case-item.expanded .case-close-btn {
+            display: flex;
+        }
+
+        /* --- 3. ОСТАЛЬНЫЕ ЭЛЕМЕНТЫ --- */
+        
         .hero-title { 
             font-size: 3rem !important;
             line-height: 1.1;
@@ -885,26 +939,11 @@
             margin-top: 50px;
             margin-bottom: 30px;
         }
-
-        .grid-3 { grid-template-columns: 1fr; }
         
-        /* Крестик закрытия */
-        .case-close-btn { 
-            top: 20px; 
-            right: 20px; 
-            font-size: 2rem; 
-            background: rgba(0,0,0,0.5); 
-            width: 40px;
-            height: 40px;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            z-index: 2002;
-            
-            display: none; /* ВАЖНО: Скрыт по умолчанию! */
-        }
-         .case-item.expanded .case-close-btn {
-            display: flex;
+        /* Услуги - высота авто */
+        .service-item {
+            height: auto; 
+            min-height: 450px; /* Чтобы все равно были высокими */
         }
         
         .footer-links {
