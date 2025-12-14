@@ -1029,7 +1029,7 @@
         /* --- 3. ОСТАЛЬНЫЕ ЭЛЕМЕНТЫ --- */
         
         .hero-title { 
-            font-size: 13vw !important; 
+            font-size: 15vw !important; 
             line-height: 1.0; /* Чуть плотнее строки, чтобы было компактно */
             margin-bottom: 10px;
         }
@@ -1083,27 +1083,36 @@
     </nav>
 
     <!-- HERO SECTION -->
-    <section id="hero">
-        <!-- Cube Object -->
-        <div class="cube-wrapper">
-            <div class="glow-core"></div>
-            <div class="cube-frame">
-                <div class="marker tl"></div>
-                <div class="marker tr"></div>
-                <div class="marker bl"></div>
-                <div class="marker br"></div>
-            </div>
+    <div class="cube-wrapper"> <!-- ОТКРЫТИЕ КУБА -->
+        
+        <div class="glow-core"></div>
+        <div class="cube-frame">
+            <div class="marker tl"></div>
+            <div class="marker tr"></div>
+            <div class="marker bl"></div>
+            <div class="marker br"></div>
         </div>
+
+        <!-- !!! ВСТАВЛЯТЬ СЮДА (ВНУТРЬ) !!! -->
+        <div class="cube-services">
+            <span>ДИЗАЙН</span> <span class="sep">/</span> 
+            <span>БРЕНДИНГ</span> <span class="sep">/</span> 
+            <span>ВИДЕО</span>
+        </div>
+
+        <!-- Технические надписи (FIG/STATUS) тоже должны быть здесь, внутри -->
+        <div style="position: absolute; bottom: -50px; left: 15px; font-size: 10px; color: var(--text-muted); font-family: monospace;">
+            FIG. 01 / NEURAL CORE
+        </div>
+        <div style="position: absolute; bottom: -50px; right: 15px; font-size: 10px; color: var(--text-muted); font-family: monospace;">
+            STATUS: ACTIVE
+        </div>
+
+    </div>
 
         <div class="hero-text">
     <div class="hero-desc">Generative Design Agency</div>
     <h1 class="hero-title">The Future<br>Is Neural</h1>
-            
-            <p class="hero-subtitle">
-                Дизайн <span class="separator">/</span> 
-                Брендинг <span class="separator">/</span> 
-                Видеоконтент
-            </p>
 
     <!-- ДОБАВИЛ КЛАСС "hero-meta" ДЛЯ УПРАВЛЕНИЯ ОТСТУПАМИ -->
     <div class="hero-meta">
