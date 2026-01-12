@@ -1744,46 +1744,52 @@
     </script>
 
 <script>
-    // Функция переключения слайдов
     function changeSlide(event, direction) {
-    // Находим родительский контейнер кнопки, на которую нажали
-    const container = event.target.closest('.gallery-frame');
-    // Ищем все слайды внутри этого контейнера
-    const slides = container.querySelectorAll('.gallery-slide');
-    
-    let activeIndex = -1;
+        // Находим контейнер и слайды
+        const container = event.target.closest('.gallery-frame');
+        const slides = container.querySelectorAll('.gallery-slide');
+        
+        let activeIndex = -1;
 
-    // 1. Ищем текущий активный слайд и выключаем его
-    slides.forEach((slide, index) => {
-        if (slide.classList.contains('active')) {
-            activeIndex = index;
-            slide.classList.remove('active');
-            slide.pause(); // Ставим видео на паузу
-            slide.currentTime = 0; // (Опционально) сбрасываем видео в начало
-        }
-    });
-
-    // 2. Вычисляем индекс следующего слайда
-    let newIndex = activeIndex + direction;
-    if (newIndex >= slides.length) newIndex = 0;
-    if (newIndex < 0) newIndex = slides.length - 1;
-
-    // 3. Активируем новый слайд
-    const nextSlide = slides[newIndex];
-    nextSlide.classList.add('active');
-    
-    // Пытаемся запустить видео
-    var playPromise = nextSlide.play();
-    if (playPromise !== undefined) {
-        playPromise.then(_ => {
-            // Автовоспроизведение началось
-        })
-        .catch(error => {
-            // Автовоспроизведение было запрещено браузером
-            console.log("Autoplay prevented");
+        // 1. Выключаем текущий слайд
+        slides.forEach((slide, index) => {
+            if (slide.classList.contains('active')) {
+                activeIndex = index;
+                slide.classList.remove('active');
+                
+                // ВАЖНО: Проверяем, видео ли это, перед тем как ставить на паузу
+                if (slide.tagName === 'VIDEO') {
+                    slide.pause(); 
+                    slide.currentTime = 0; 
+                }
+            }
         });
+
+        // Если активный слайд не найден (страховка), берем 0
+        if (activeIndex === -1) activeIndex = 0;
+
+        // 2. Вычисляем новый индекс
+        let newIndex = activeIndex + direction;
+        if (newIndex >= slides.length) newIndex = 0;
+        if (newIndex < 0) newIndex = slides.length - 1;
+
+        // 3. Включаем новый слайд
+        const nextSlide = slides[newIndex];
+        nextSlide.classList.add('active');
+        
+        // ВАЖНО: Проверяем, видео ли это, перед запуском
+        if (nextSlide.tagName === 'VIDEO') {
+            var playPromise = nextSlide.play();
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    // Видео пошло
+                })
+                .catch(error => {
+                    console.log("Autoplay prevented");
+                });
+            }
+        }
     }
-}
 </script>
     
 </body>
