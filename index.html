@@ -1354,27 +1354,24 @@
         </div>
 
         <!-- Правая колонка: Галерея -->
+       
         <div class="case-col-gallery">
             <div class="gallery-frame">
                 <div class="crt-overlay-gallery"></div>
                 
-                 <video class="gallery-slide active" autoplay muted loop playsinline>
-        <source src="/Marketplace_card.mp4" type="video/mp4">
-    </video>
+                <!-- Слайд 1 (Видео) -->
+                <video class="gallery-slide active" autoplay muted loop playsinline>
+                    <source src="/Marketplace_card.mp4" type="video/mp4">
+                </video>
 
-    <!-- Изображение 2 -->
-    <div class="case-img-bg">
-                    <img src="/image/Clarins.jpg">
-                </div>
+                <!-- Слайд 2 (Исправлено) -->
+                <img src="/image/Clarins.jpg" class="gallery-slide">
 
-    <!-- Изображение 3 -->
-     <div class="case-img-bg">
-                    <img src="/image/polo-RL.jpg">
-                </div>
-     <!-- Изображение 4 -->
-     <div class="case-img-bg">
-                    <img src="/image/dreammachine.jpg">
-                </div>
+                <!-- Слайд 3 (Исправлено) -->
+                <img src="/image/polo-RL.jpg" class="gallery-slide">
+                
+                <!-- Слайд 4 (Исправлено) -->
+                <img src="/image/dreammachine.jpg" class="gallery-slide">
 
                 <button class="slider-btn prev" onclick="changeSlide(event, -1)">&#10094;</button>
                 <button class="slider-btn next" onclick="changeSlide(event, 1)">&#10095;</button>
@@ -1470,14 +1467,19 @@
 
                     <div class="case-col-gallery">
                         <div class="gallery-frame">
-                            <div class="crt-overlay-gallery"></div>
-                            
-                            <img src="/image/Visit.jpg" class="gallery-slide active">
-                            <img src="/image/Visit-2.jpg" class="gallery-slide">
-                            
-                            <button class="slider-btn prev" onclick="changeSlide(event, -1)">&#10094;</button>
-                            <button class="slider-btn next" onclick="changeSlide(event, 1)">&#10095;</button>
-                        </div>
+    <!-- Сетка поверх -->
+    <div class="crt-overlay-gallery"></div>
+    
+    <!-- Слайд 1 -->
+    <img src="/image/Visit.jpg" class="gallery-slide active">
+    
+    <!-- Слайд 2 -->
+    <img src="/image/Visit-2.jpg" class="gallery-slide">
+
+    <!-- Кнопки управления -->
+    <button class="slider-btn prev" onclick="changeSlide(event, -1)">&#10094;</button>
+    <button class="slider-btn next" onclick="changeSlide(event, 1)">&#10095;</button>
+</div>
                     </div>
                 </div>
             </div>
