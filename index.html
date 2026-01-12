@@ -1420,10 +1420,20 @@
                         <div class="gallery-frame">
                             <div class="crt-overlay-gallery"></div>
                             
-                            <!-- Слайды -->
-                            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80" class="gallery-slide active">
-                            <img src="https://images.unsplash.com/photo-1535378437323-952a63457a0a?auto=format&fit=crop&w=800&q=80" class="gallery-slide">
-                            <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80" class="gallery-slide">
+                            <!-- Видео 1 -->
+                            <video class="gallery-slide active" autoplay muted loop playsinline poster="/video-hd/creax_0.jpg">
+                                <source src="/video-hd/creax_short.mp4" type="video/mp4">
+                            </video>
+
+                            <!-- Видео 2 -->
+                            <video class="gallery-slide" autoplay muted loop playsinline poster="/video-hd/napolnitel_0.jpg">
+                                <source src="/video-hd/napolnitel.mp4" type="video/mp4">
+                            </video> 
+                            
+                            <!-- Видео 3 -->
+                            <video class="gallery-slide" autoplay muted loop playsinline poster="/video-hd/sw_lego_0.jpg">
+                                <source src="/video-hd/sw_lego.mp4" type="video/mp4">
+                            </video>
                             
                             <!-- Кнопки -->
                             <button class="slider-btn prev" onclick="changeSlide(event, -1)">&#10094;</button>
@@ -1763,6 +1773,14 @@
                     slide.currentTime = 0; 
                 }
             }
+            
+            // Когда нашел старый слайд (который уходит):
+    oldSlide.classList.remove('active');
+    oldSlide.pause(); // <--- ЭКОНОМИМ РЕСУРСЫ
+
+    // Когда нашел новый слайд (который приходит):
+    newSlide.classList.add('active');
+    newSlide.play();  // <--- ЗАПУСКАЕМ
         });
 
         // Если активный слайд не найден (страховка), берем 0
