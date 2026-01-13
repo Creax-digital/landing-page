@@ -490,6 +490,25 @@
         filter: grayscale(100%) contrast(120%);
     }
 
+   .service-media video {
+    opacity: 0;
+    transition: opacity 0.6s ease-in-out; /* Плавное появление за 0.6 сек */
+    position: absolute;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    z-index: 1;
+}
+/* Состояние при наведении: плавно проявляем */
+.service-item:hover .service-media video {
+    opacity: 1;
+}
+    
+    /* Сохраняем вашу стилистику (Ч/Б фильтр) */
+        filter: grayscale(100%) contrast(120%);
+        transition: filter 0.5s ease;
+}
+
     .service-overlay-fx {
         position: absolute;
         top: 0;
@@ -1156,120 +1175,183 @@
             <h2 class="section-title">Услуги</h2>
             
             <div class="services-grid">
-                <!-- Service 1 -->
-                <div class="service-item">
-                    <div class="service-media">
-                        <!-- Placeholder GIF: Abstract Web -->
-                        <img src="/digital-design.gif" alt="Digital Design">
-                        <div class="service-overlay-fx"></div>
-                    </div>
-                    <div class="service-content">
-                        <h4 style="margin-bottom: 10px; color: var(--accent-cyan);">01</h4>
-                        <h3>Digital Design</h3>
-                        
-                        <!-- List Style (Variant 3) -->
-                        <ul style="list-style: none; padding: 0; margin: 20px 0;">
-                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
-                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Рекламные баннеры
-                            </li>
-                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
-                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Постеры
-                            </li>
-                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
-                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Инфографика
-                            </li>
-                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
-                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Презентации
-                            </li>
-                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
-                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Лендинги
-                            </li>
-                        </ul>
+    <!-- Service 1: Digital Design -->
+    <div class="service-item">
+        <div class="service-media">
+            <video 
+                class="hover-video" 
+                width="100%" 
+                height="100%" 
+                muted 
+                loop 
+                playsinline 
+                preload="none"
+                poster="/preview/digitaldesign_preview.jpg">
+                <source src="/banner_render/digitald_opt.mp4" type="video/mp4">
+            </video>
+            <div class="service-overlay-fx"></div>
+        </div>
+        <div class="service-content">
+            <h4 style="margin-bottom: 10px; color: var(--accent-cyan);">01</h4>
+            <h3>Digital Design</h3>
+            
+            <ul style="list-style: none; padding: 0; margin: 20px 0;">
+                <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                    <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Рекламные баннеры
+                </li>
+                <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                    <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Постеры
+                </li>
+                <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                    <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Инфографика
+                </li>
+                <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                    <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Презентации
+                </li>
+                <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                    <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Лендинги
+                </li>
+            </ul>
 
-                        <!-- Footer Note with Neon // -->
-                        <p style="color: var(--text-muted); font-size: 0.85rem; font-style: italic; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--grid-line);">
-                            <span style="color: var(--accent-cyan); text-shadow: 0 0 8px var(--accent-cyan); margin-right: 5px; font-weight: bold;">//</span> 
-                            Широкий профиль креативных решений для вашего бизнеса.
-                        </p>
-                    </div>
-                </div>
+            <p style="color: var(--text-muted); font-size: 0.85rem; font-style: italic; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--grid-line);">
+                <span style="color: var(--accent-cyan); text-shadow: 0 0 8px var(--accent-cyan); margin-right: 5px; font-weight: bold;">//</span> 
+                Широкий профиль креативных решений для вашего бизнеса.
+            </p>
+        </div>
+    </div>
 
-                <!-- Service 2 -->
-                <div class="service-item">
-                    <div class="service-media">
-                         <!-- Placeholder GIF: Abstract Geometry -->
-                         <img src="/Branding.gif" alt="Branding">
-                         <div class="service-overlay-fx"></div>
-                    </div>
-                    <div class="service-content">
-                        <h4 style="margin-bottom: 10px; color: var(--accent-cyan);">02</h4>
-                        <h3>Branding</h3>
-                        
-                        <ul style="list-style: none; padding: 0; margin: 20px 0;">
-                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
-                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Визуальная айдентика
-                            </li>
-                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
-                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Логотипы
-                            </li>
-                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
-                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Брендбуки
-                            </li>
-                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
-                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Иллюстрации
-                            </li>
-                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
-                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Эмодзи
-                            </li>
-                        </ul>
+    <!-- Service 2: Branding -->
+    <div class="service-item">
+        <div class="service-media">
+            <video 
+                class="hover-video" 
+                width="100%" 
+                height="100%" 
+                muted 
+                loop 
+                playsinline 
+                preload="none"
+                poster="/preview/branding_preview.jpg">
+                <source src="/banner_render/branding_opt.mp4" type="video/mp4">
+            </video>
+            <div class="service-overlay-fx"></div>
+        </div>
+        <div class="service-content">
+            <h4 style="margin-bottom: 10px; color: var(--accent-cyan);">02</h4>
+            <h3>Branding</h3>
+            
+            <ul style="list-style: none; padding: 0; margin: 20px 0;">
+                <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                    <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Визуальная айдентика
+                </li>
+                <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                    <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Логотипы
+                </li>
+                <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                    <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Брендбуки
+                </li>
+                <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                    <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Иллюстрации
+                </li>
+                <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                    <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Эмодзи
+                </li>
+            </ul>
 
-                        <p style="color: var(--text-muted); font-size: 0.85rem; font-style: italic; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--grid-line);">
-                            <span style="color: var(--accent-cyan); text-shadow: 0 0 8px var(--accent-cyan); margin-right: 5px; font-weight: bold;">//</span> 
-                            Создаем визуальный язык, на котором говорит ваш бренд.
-                        </p>
-                    </div>
-                </div>
+            <p style="color: var(--text-muted); font-size: 0.85rem; font-style: italic; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--grid-line);">
+                <span style="color: var(--accent-cyan); text-shadow: 0 0 8px var(--accent-cyan); margin-right: 5px; font-weight: bold;">//</span> 
+                Создаем визуальный язык, на котором говорит ваш бренд.
+            </p>
+        </div>
+    </div>
 
-                <!-- Service 3 -->
-                <div class="service-item">
-                    <div class="service-media">
-                         <!-- Placeholder GIF: 3D Motion -->
-                         <img src="/AI-PROD.gif" alt="AI-Production">
-                         <div class="service-overlay-fx"></div>
-                    </div>
-                    <div class="service-content">
-                        <h4 style="margin-bottom: 10px; color: var(--accent-cyan);">03</h4>
-                        <h3>AI-Production</h3>
-                        
-                        <ul style="list-style: none; padding: 0; margin: 20px 0;">
-                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
-                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> AI-съемки
-                            </li>
-                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
-                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Рекламный медиаконтент
-                            </li>
-                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
-                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Художественные видео
-                            </li>
-                            <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
-                                <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Творческие креативы
-                            </li>
-                        </ul>
+    <!-- Service 3: AI-Production -->
+    <div class="service-item">
+        <div class="service-media">
+            <video 
+                class="hover-video" 
+                width="100%" 
+                height="100%" 
+                muted 
+                loop 
+                playsinline 
+                preload="none"
+                poster="/preview/aiprod_preview.jpg">
+                <source src="/banner_render/aiprod_opt.mp4" type="video/mp4">
+            </video>
+            <div class="service-overlay-fx"></div>
+        </div>
+        <div class="service-content">
+            <h4 style="margin-bottom: 10px; color: var(--accent-cyan);">03</h4>
+            <h3>AI-Production</h3>
+            
+            <ul style="list-style: none; padding: 0; margin: 20px 0;">
+                <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                    <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> AI-съемки
+                </li>
+                <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                    <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Рекламный медиаконтент
+                </li>
+                <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                    <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Художественные видео
+                </li>
+                <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                    <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Творческие креативы
+                </li>
+            </ul>
 
-                        <p style="color: var(--text-muted); font-size: 0.85rem; font-style: italic; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--grid-line);">
-                            <span style="color: var(--accent-cyan); text-shadow: 0 0 8px var(--accent-cyan); margin-right: 5px; font-weight: bold;">//</span> 
-                            Генерируем уникальный контент для ваших задач.
-                        </p>
-                    </div>
-                </div>
+            <p style="color: var(--text-muted); font-size: 0.85rem; font-style: italic; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--grid-line);">
+                <span style="color: var(--accent-cyan); text-shadow: 0 0 8px var(--accent-cyan); margin-right: 5px; font-weight: bold;">//</span> 
+                Генерируем уникальный контент для ваших задач.
+            </p>
+        </div>
+    </div>
 
-                <!-- Service 4 -->
-                <div class="service-item">
-                    <div class="service-media">
-                         <!-- Placeholder GIF: AI Neural -->
-                         <img src="/Digital-support.gif" alt="Digital Support">
-                         <div class="service-overlay-fx"></div>
-                    </div>
+    <!-- Service 4: Digital Support -->
+    <div class="service-item">
+        <div class="service-media">
+            <video 
+                class="hover-video" 
+                width="100%" 
+                height="100%" 
+                muted 
+                loop 
+                playsinline 
+                preload="none"
+                poster="/preview/digsup_preview.jpg">
+                <source src="/banner_render/digitalsup_opt.mp4" type="video/mp4">
+            </video>
+            <div class="service-overlay-fx"></div>
+        </div>
+        <div class="service-content">
+            <h4 style="margin-bottom: 10px; color: var(--accent-cyan);">04</h4>
+            <h3>Digital Support</h3>
+            
+            <ul style="list-style: none; padding: 0; margin: 20px 0;">
+                <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                    <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Изображения
+                </li>
+                <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                    <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Видеоконтент
+                </li>
+                <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                    <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Тексты и статьи
+                </li>
+                <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                    <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Cайты и сервисы
+                </li>
+                <li style="margin-bottom: 5px; color: #e0e0e0; font-size: 0.95rem;">
+                    <span style="color: var(--accent-cyan); margin-right: 8px; font-weight: bold;">›</span> Консультации 24/7
+                </li>
+            </ul>
+
+            <p style="color: var(--text-muted); font-size: 0.85rem; font-style: italic; margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--grid-line);">
+                <span style="color: var(--accent-cyan); text-shadow: 0 0 8px var(--accent-cyan); margin-right: 5px; font-weight: bold;">//</span> 
+                Полное контент-сопровождение вашего бизнеса по гибкой и удобной подписке.
+            </p>
+        </div>
+    </div>
+</div>
                     <div class="service-content">
                         <h4 style="margin-bottom: 10px; color: var(--accent-cyan);">04</h4>
                         <h3>Digital Support</h3>
@@ -1607,208 +1689,156 @@
                 <a href="#">Email</a>
             </div>
             <div class="footer-copyright">
-                <p>© 2025 CREAX Digital Agency.</p>
+                <p>© 2026 CREAX Digital Agency.</p>
             </div>
         </div>
     </footer>
 
     <!-- SCRIPTS -->
-    <script>
-        // 1. Case Logic
-        function expandCase(element) {
-            if (element.classList.contains('expanded')) return;
-            element.classList.add('expanded');
-            document.body.style.overflow = 'hidden'; 
-        }
-
-        function collapseCase(event, btn) {
-            event.stopPropagation();
-            const parent = btn.parentElement;
-            parent.classList.remove('expanded');
-            document.body.style.overflow = 'auto';
-        }
-
-        // 2. Mouse Glow Logic
-        const glow = document.querySelector('.cursor-glow');
-        document.addEventListener('mousemove', (e) => {
-            glow.style.left = e.clientX + 'px';
-            glow.style.top = e.clientY + 'px';
-        });
-
-        // 3. Canvas "Digital Dust" Logic
-        const canvas = document.getElementById('canvas-bg');
-        const ctx = canvas.getContext('2d');
-
-        let width, height;
-        let particles = [];
-        
-        // Settings
-        const particleCount = 70; // Количество частиц
-        const connectionDistance = 140; // Дистанция соединения
-        const mouseDistance = 200; // Радиус реакции на мышь
-
-        let mouse = { x: null, y: null };
-
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = e.x;
-            mouse.y = e.y;
-        });
-        
-        window.addEventListener('mouseleave', () => {
-            mouse.x = null;
-            mouse.y = null;
-        });
-
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.size = Math.random() * 2 + 1; // Square size
-            }
-
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-
-                // Bounce off edges
-                if (this.x < 0 || this.x > width) this.vx *= -1;
-                if (this.y < 0 || this.y > height) this.vy *= -1;
-
-                // Mouse interaction
-                if (mouse.x != null) {
-                    let dx = mouse.x - this.x;
-                    let dy = mouse.y - this.y;
-                    let distance = Math.sqrt(dx*dx + dy*dy);
-                    
-                    if (distance < mouseDistance) {
-                        const forceDirectionX = dx / distance;
-                        const forceDirectionY = dy / distance;
-                        const force = (mouseDistance - distance) / mouseDistance;
-                        // Gently push away
-                        const directionX = forceDirectionX * force * 0.6;
-                        const directionY = forceDirectionY * force * 0.6;
-                        this.vx -= directionX;
-                        this.vy -= directionY;
-                    }
-                }
-            }
-
-            draw() {
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.4)'; // White squares
-                ctx.fillRect(this.x, this.y, this.size, this.size);
-            }
-        }
-
-        function initParticles() {
-            particles = [];
-            for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, width, height);
-            
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-
-                // Draw connections
-                for (let j = i; j < particles.length; j++) {
-                    let dx = particles[i].x - particles[j].x;
-                    let dy = particles[i].y - particles[j].y;
-                    let distance = Math.sqrt(dx*dx + dy*dy);
-
-                    if (distance < connectionDistance) {
-                        ctx.beginPath();
-                        // Opacity based on distance
-                        let opacity = 1 - (distance / connectionDistance);
-                        ctx.strokeStyle = 'rgba(0, 240, 255,' + (opacity * 0.15) + ')'; // Cyan lines
-                        ctx.lineWidth = 1;
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-            requestAnimationFrame(animate);
-        }
-
-        window.addEventListener('resize', () => {
-            resize();
-            initParticles();
-        });
-
-        // Init
-        resize();
-        initParticles();
-        animate();
-
-    </script>
-
+    
 <script>
+    /**
+     * =========================================================================
+     * РАЗДЕЛ 1: ЛОГИКА УСЛУГ (SERVICE HOVER EFFECTS)
+     * Плавное появление видео при наведении.
+     * =========================================================================
+     */
+    document.addEventListener("DOMContentLoaded", () => {
+        const items = document.querySelectorAll('.service-item');
+
+        items.forEach(item => {
+            const video = item.querySelector('video.hover-video');
+            if (!video) return;
+
+            // 1. НАВЕДЕНИЕ МЫШИ (START)
+            item.addEventListener('mouseenter', () => {
+                // Если видео еще ни разу не грузилось — начинаем загрузку
+                if (video.readyState === 0) {
+                    video.load();
+                }
+
+                // Запускаем воспроизведение
+                const playPromise = video.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(() => {
+                        // Игнорируем ошибки автоплея (браузеры иногда блокируют)
+                        console.log('Autoplay prevented'); 
+                    });
+                }
+            });
+
+            // 2. УХОД МЫШИ (STOP)
+            item.addEventListener('mouseleave', () => {
+                // Задержка 600мс соответствует CSS transition (opacity)
+                // Видео сначала исчезает визуально, потом ставится на паузу
+                setTimeout(() => {
+                    video.pause();
+                    video.currentTime = 0; // Сброс на начало (к постеру)
+                }, 600);
+            });
+        });
+    });
+
+    /**
+     * =========================================================================
+     * РАЗДЕЛ 2: ЛОГИКА КЕЙСОВ (CASE EXPANSION & LAZY LOAD)
+     * Открытие на полный экран и дозагрузка тяжелого контента.
+     * =========================================================================
+     */
+    
+    // Открыть кейс
+    function expandCase(element) {
+        if (element.classList.contains('expanded')) return;
+        
+        element.classList.add('expanded');
+        document.body.style.overflow = 'hidden'; // Блокируем скролл страницы
+
+        // === ОПТИМИЗАЦИЯ: ЗАГРУЗКА ПО ТРЕБОВАНИЮ ===
+        // Ищем элементы с классом lazy-load внутри открываемого кейса
+        const lazyElements = element.querySelectorAll('.lazy-load');
+
+        lazyElements.forEach(el => {
+            // Если есть data-src и он еще не установлен как основной src
+            if (el.dataset.src && (!el.getAttribute('src') || !el.getAttribute('src').includes(el.dataset.src))) {
+                
+                // Подменяем заглушку на реальный файл
+                el.src = el.dataset.src;
+
+                // Специфика для ВИДЕО
+                if (el.tagName === 'VIDEO') {
+                    el.load(); // Команда браузеру начать загрузку
+                    
+                    // Если видео должно играть сразу (активный слайд)
+                    if (el.classList.contains('active')) {
+                        const playPromise = el.play();
+                        if (playPromise !== undefined) playPromise.catch(() => {});
+                    }
+                }
+                
+                // Убираем класс, чтобы не обрабатывать повторно
+                el.classList.remove('lazy-load');
+            }
+        });
+    }
+
+    // Закрыть кейс
+    function collapseCase(event, btn) {
+        event.stopPropagation(); // Чтобы клик не сработал на открытие
+        const parent = btn.parentElement; // Находим .case-item
+        
+        parent.classList.remove('expanded');
+        document.body.style.overflow = 'auto'; // Возвращаем скролл
+        
+        // Ставим на паузу все видео внутри при закрытии
+        const videos = parent.querySelectorAll('video');
+        videos.forEach(v => v.pause());
+    }
+
+    /**
+     * =========================================================================
+     * РАЗДЕЛ 3: СЛАЙДЕР ГАЛЕРЕИ (GALLERY LOGIC)
+     * Переключение картинок/видео внутри открытого кейса.
+     * =========================================================================
+     */
     function changeSlide(event, direction) {
-        // Находим контейнер и слайды
+        // Находим контейнер слайдера
         const container = event.target.closest('.gallery-frame');
         const slides = container.querySelectorAll('.gallery-slide');
         
-        let activeIndex = -1;
-
-        // 1. Выключаем текущий слайд
-        slides.forEach((slide, index) => {
-            if (slide.classList.contains('active')) {
-                activeIndex = index;
-                slide.classList.remove('active');
-                
-                // ВАЖНО: Проверяем, видео ли это, перед тем как ставить на паузу
-                if (slide.tagName === 'VIDEO') {
-                    slide.pause(); 
-                    slide.currentTime = 0; 
-                }
-            }
-            
-            // Когда нашел старый слайд (который уходит):
-    oldSlide.classList.remove('active');
-    oldSlide.pause(); // <--- ЭКОНОМИМ РЕСУРСЫ
-
-    // Когда нашел новый слайд (который приходит):
-    newSlide.classList.add('active');
-    newSlide.play();  // <--- ЗАПУСКАЕМ
-        });
-
-        // Если активный слайд не найден (страховка), берем 0
+        // Находим индекс текущего активного слайда
+        let activeIndex = Array.from(slides).findIndex(s => s.classList.contains('active'));
         if (activeIndex === -1) activeIndex = 0;
 
-        // 2. Вычисляем новый индекс
-        let newIndex = activeIndex + direction;
-        if (newIndex >= slides.length) newIndex = 0;
-        if (newIndex < 0) newIndex = slides.length - 1;
-
-        // 3. Включаем новый слайд
-        const nextSlide = slides[newIndex];
-        nextSlide.classList.add('active');
+        // --- 1. ВЫКЛЮЧАЕМ ТЕКУЩИЙ СЛАЙД ---
+        const currentSlide = slides[activeIndex];
+        currentSlide.classList.remove('active');
         
-        // ВАЖНО: Проверяем, видео ли это, перед запуском
-        if (nextSlide.tagName === 'VIDEO') {
-            var playPromise = nextSlide.play();
-            if (playPromise !== undefined) {
-                playPromise.then(_ => {
-                    // Видео пошло
-                })
-                .catch(error => {
-                    console.log("Autoplay prevented");
-                });
-            }
+        // Если это видео - паузим его для экономии ресурсов
+        if (currentSlide.tagName === 'VIDEO') {
+            currentSlide.pause();
         }
-    }
-</script>
+
+        // --- 2. ВЫЧИСЛЯЕМ НОВЫЙ ИНДЕКС ---
+        let newIndex = activeIndex + direction;
+        if (newIndex >= slides.length) newIndex = 0; // Зацикливание вперед
+        if (newIndex < 0) newIndex = slides.length - 1; // Зацикливание назад
+
+        // --- 3. ВКЛЮЧАЕМ НОВЫЙ СЛАЙД ---
+        const nextSlide = slides[newIndex];
+        
+        // Ленивая загрузка (на случай если пользователь быстро листает)
+        // Если src пустой или отличается от data-src, загружаем
+        if (nextSlide.dataset.src && (!nextSlide.getAttribute('src') || !nextSlide.getAttribute('src').includes(nextSlide.dataset.src))) {
+            nextSlide.src = nextSlide.dataset.src;
+            if (nextSlide.tagName === 'VIDEO') nextSlide.load();
+        }
+
+        nextSlide.classList.add('active');
+
+        // Если новый слайд — видео, запускаем его
+        if (nextSlide.tagName === 'VIDEO') {
+            // Небольшая задержка для стабильности
+            setTimeo
     
 </body>
 </html>
