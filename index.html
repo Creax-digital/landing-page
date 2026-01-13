@@ -1341,6 +1341,49 @@
         }
     </script>
 
+<script>
+    /**
+     * =========================================================================
+     * MOBILE SCROLL ACTIVATION (ADVANTAGES)
+     * Подсветка карточек при скролле (эффект фокуса по центру экрана)
+     * =========================================================================
+     */
+    document.addEventListener("DOMContentLoaded", () => {
+        // Проверяем, что это мобильное устройство (ширина < 900px)
+        // Если хотите, чтобы работало и на ПК при скролле, уберите проверку if
+        if (window.innerWidth <= 900) {
+            
+            const cards = document.querySelectorAll('.adv-card');
+            
+            const observerOptions = {
+                root: null, // Окно браузера
+                // Самая магия здесь:
+                // Мы сужаем область срабатывания до узкой полосы в центре экрана.
+                // '-40% 0px -40% 0px' означает: игнорировать верхние 40% и нижние 40% экрана.
+                // Активная зона — только 20% посередине.
+                rootMargin: '-40% 0px -40% 0px', 
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Карточка в центре экрана — включаем
+                        entry.target.classList.add('active');
+                    } else {
+                        // Карточка ушла из центра — выключаем
+                        entry.target.classList.remove('active');
+                    }
+                });
+            }, observerOptions);
+
+            cards.forEach(card => {
+                observer.observe(card);
+            });
+        }
+    });
+</script>
+    
     <!-- SCHEMA.ORG MARKUP -->
     <script type="application/ld+json">
     {
