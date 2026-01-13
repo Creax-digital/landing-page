@@ -787,9 +787,9 @@
                     <div class="case-col-gallery">
                         <div class="gallery-frame">
                             <div class="crt-overlay-gallery"></div>
-                            <video class="gallery-slide active lazy-load" muted loop playsinline poster="/video-hd/creax_0.jpg" data-src="/video-hd/creax_short.mp4"></video>
-                            <video class="gallery-slide lazy-load" muted loop playsinline poster="/video-hd/napolnitel_0.jpg" data-src="/video-hd/napolnitel.mp4"></video> 
-                            <video class="gallery-slide lazy-load" muted loop playsinline poster="/video-hd/sw_lego_0.jpg" data-src="/video-hd/sw_lego.mp4"></video>
+                            <video class="gallery-slide active lazy-load" muted loop playsinline poster="/portfolio_video/creax_prew.jpg" data-src="/portfolio_video/creax_intro.mp4"></video>
+                            <video class="gallery-slide lazy-load" muted loop playsinline poster="/portfolio_video/napolnitel_prew.jpg" data-src="/portfolio_video/papper.mp4"></video> 
+                            <video class="gallery-slide lazy-load" muted loop playsinline poster="/portfolio_video/sw_lego_prew.jpg" data-src="/portfolio_video/lego_starwars.mp4"></video>
                             <button class="slider-btn prev" onclick="changeSlide(event, -1)">&#10094;</button>
                             <button class="slider-btn next" onclick="changeSlide(event, 1)">&#10095;</button>
                         </div>
@@ -1027,52 +1027,86 @@
          * РАЗДЕЛ 4: ВИЗУАЛЬНЫЕ ЭФФЕКТЫ (MOUSE GLOW & CANVAS)
          * =========================================================================
          */
-        const glow = document.querySelector('.cursor-glow');
+         const glow = document.querySelector('.cursor-glow');
         if (glow) {
             document.addEventListener('mousemove', (e) => {
-                glow.style.left = e.clientX + 'px';
-                glow.style.top = e.clientY + 'px';
+                // Используем requestAnimationFrame для плавности следования за мышью
+                requestAnimationFrame(() => {
+                    glow.style.left = e.clientX + 'px';
+                    glow.style.top = e.clientY + 'px';
+                });
             });
         }
 
+        // --- 2. Нейронная сеть (Canvas) ---
         const canvas = document.getElementById('canvas-bg');
         if (canvas) {
             const ctx = canvas.getContext('2d');
             let width, height;
             let particles = [];
             let mouse = { x: null, y: null };
-            const isMobile = window.innerWidth < 768;
-            const particleCount = isMobile ? 30 : 70; 
-            const connectionDistance = isMobile ? 100 : 140; 
-            const mouseDistance = 200;
 
+            // === НАСТРОЙКИ (ТЮНИНГ ПОД СТИЛЬ) ===
+            const isMobile = window.innerWidth < 768;
+            
+            // Количество частиц: чуть больше для больших экранов, чтобы не было пустот
+            const particleCount = isMobile ? 35 : 85; 
+            
+            // Дистанция соединения: увеличиваем, чтобы линии были длиннее и элегантнее
+            const connectionDistance = isMobile ? 110 : 160; 
+            
+            // Радиус реакции на мышь
+            const mouseDistance = 220;
+            
+            // Коэффициент скорости: Меньше = Медленнее и плавнее (было 0.5)
+            const speedFactor = 0.35; 
+
+            // Отслеживание мыши
             window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
             window.addEventListener('mouseleave', () => { mouse.x = null; mouse.y = null; });
 
-            function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
+            // Ресайз окна
+            function resize() { 
+                width = canvas.width = window.innerWidth; 
+                height = canvas.height = window.innerHeight; 
+            }
 
             class Particle {
                 constructor() {
-                    this.x = Math.random() * width; this.y = Math.random() * height;
-                    this.vx = (Math.random() - 0.5) * 0.5; this.vy = (Math.random() - 0.5) * 0.5;
+                    this.x = Math.random() * width; 
+                    this.y = Math.random() * height;
+                    // Скорость (vx, vy) теперь умножается на speedFactor для плавности
+                    this.vx = (Math.random() - 0.5) * speedFactor; 
+                    this.vy = (Math.random() - 0.5) * speedFactor;
                     this.size = Math.random() * 2 + 1;
                 }
+                
                 update() {
-                    this.x += this.vx; this.y += this.vy;
+                    this.x += this.vx; 
+                    this.y += this.vy;
+
+                    // Отскок от краев
                     if (this.x < 0 || this.x > width) this.vx *= -1;
                     if (this.y < 0 || this.y > height) this.vy *= -1;
+
+                    // Реакция на мышь (мягкое отталкивание)
                     if (mouse.x != null) {
-                        let dx = mouse.x - this.x; let dy = mouse.y - this.y;
+                        let dx = mouse.x - this.x; 
+                        let dy = mouse.y - this.y;
                         let distance = Math.sqrt(dx*dx + dy*dy);
+                        
                         if (distance < mouseDistance) {
                             const force = (mouseDistance - distance) / mouseDistance;
+                            // Мягкое замедление отталкивания
                             this.vx -= (dx / distance) * force * 0.6;
                             this.vy -= (dy / distance) * force * 0.6;
                         }
                     }
                 }
+                
                 draw() {
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                    // ЯРКОСТЬ ЧАСТИЦ: увеличили с 0.4 до 0.6
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
                     ctx.fillRect(this.x, this.y, this.size, this.size);
                 }
             }
@@ -1084,16 +1118,26 @@
 
             function animate() {
                 ctx.clearRect(0, 0, width, height);
+                
                 for (let i = 0; i < particles.length; i++) {
-                    particles[i].update(); particles[i].draw();
+                    particles[i].update(); 
+                    particles[i].draw();
+
+                    // Отрисовка линий (нейронные связи)
                     for (let j = i; j < particles.length; j++) {
                         let dx = particles[i].x - particles[j].x;
                         let dy = particles[i].y - particles[j].y;
                         let distance = Math.sqrt(dx*dx + dy*dy);
+
                         if (distance < connectionDistance) {
                             ctx.beginPath();
+                            // Прозрачность зависит от дистанции
                             let opacity = 1 - (distance / connectionDistance);
-                            ctx.strokeStyle = 'rgba(0, 240, 255,' + (opacity * 0.15) + ')';
+                            
+                            // ЯРКОСТЬ ЛИНИЙ: множитель увеличен с 0.15 до 0.25
+                            // Это делает линии более "неоновыми" и заметными на ПК
+                            ctx.strokeStyle = 'rgba(0, 240, 255,' + (opacity * 0.25) + ')';
+                            
                             ctx.lineWidth = 1;
                             ctx.moveTo(particles[i].x, particles[i].y);
                             ctx.lineTo(particles[j].x, particles[j].y);
@@ -1104,8 +1148,11 @@
                 requestAnimationFrame(animate);
             }
 
+            // Запуск и обработка ресайза
             window.addEventListener('resize', () => { resize(); initParticles(); });
-            resize(); initParticles(); animate();
+            resize(); 
+            initParticles(); 
+            animate();
         }
     </script>
 </body>
