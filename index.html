@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CREAX.digital | Студия нейросетевого дизайна и графики</title>
     <meta name="description" content="Разработка брендинга, веб-дизайна и рекламных роликов с помощью нейросетей. Сокращаем бюджеты на продакшн до 3х раз. Заказать AI-дизайн.">
-    <meta name="keywords" content="Генеративный дизайн, AI design, нейросети, дизайн, веб-дизайн, брендинг, ИИ дизайн, нейросетевой дизайн, нейросетевое агенство, дизайн студия, дизайн агентство">
+    <meta name="keywords" content="Генеративный дизайн, AI design, нейросети, дизайн, веб-дизайн, брендинг, ИИ дизайн, нейросетевой дизайн, нейросетевое агентство, дизайн студия, дизайн агентство">
     <meta name="yandex-verification" content="c6b99fff33096dd3" />
     <meta name="google-site-verification" content="yFljbW0At_MGF_xjDFx_DwPT9tsf33T3mAPsDUag3yA" />
     <link rel="icon" href="https://creax.digital/favicon.png" type="image/png">
@@ -301,7 +301,7 @@
     .service-content {
         position: relative; z-index: 10;
         transition: transform 0.4s ease;
-        pointer-events: none; /* Allows clicks to pass through to container if needed, but we fix text interaction below */
+        pointer-events: none; 
     }
     
     .service-content a, .service-content button {
@@ -511,44 +511,7 @@
         100% { opacity: 0; }
     }
 
-    /* MEDIA QUERIES */
-    @media (max-width: 1200px) {
-        .services-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 900px) {
-        .hero-subtitle { font-size: 0.9rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; }
-        .separator { margin: 0 5px; }
-        .services-grid, .cases-grid, .grid-3 { 
-            grid-template-columns: 1fr; display: flex; flex-direction: column; gap: 25px; border: none; background: transparent;
-        }
-        .service-item, .case-item, .card {
-            border: 1px solid rgba(0, 240, 255, 0.4); 
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.1); 
-            border-radius: 12px; padding: 30px;
-        }
-        .case-title { font-size: 1.5rem; word-wrap: break-word; }
-        .case-item.expanded { overflow-y: auto; align-items: flex-start; padding: 0; border: none; border-radius: 0; gap: 0; }
-        .case-expanded-layout { flex-direction: column-reverse; justify-content: flex-end; padding: 80px 20px 40px 20px; gap: 30px; height: auto; min-height: 100%; }
-        .case-item.expanded .case-title { font-size: 2rem !important; line-height: 1.1; margin-bottom: 15px; }
-        .case-details-text { font-size: 1rem; line-height: 1.5; }
-        .case-col-gallery { width: 100%; height: auto; flex: none; }
-        .gallery-frame {width: 100%; max-width: 100%; aspect-ratio: 4/5; height: auto; margin: 0 auto; }
-        .case-close-btn { 
-            top: 20px; right: 20px; font-size: 2rem; background: rgba(0,0,0,0.5); 
-            width: 40px; height: 40px; align-items: center; justify-content: center;
-            border-radius: 50%; z-index: 2002; display: none; 
-        }
-        .case-item.expanded .case-close-btn { display: flex; }
-        .hero-title { font-size: 17vw !important; line-height: 1.0; margin-bottom: 10px; }
-        .hero-text { width: 100%; padding: 0 15px; }
-        .cube-wrapper { width: 320px; height: 320px; top: 35%; }
-        .hero-meta { max-width: 250px; margin-top: 50px; margin-bottom: 30px; }
-        .service-item { height: auto; min-height: 450px; }
-        .footer-links { flex-direction: column; gap: 20px; }
-        /* Fix blur performance on mobile */
-        .card, .service-item { backdrop-filter: none; background: rgba(10, 10, 10, 0.95); }
-    }
-        /* --- ADVANTAGES GRID --- */
+    /* --- ADVANTAGES GRID (UPDATED) --- */
     .advantages-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -684,22 +647,40 @@
         }
     }
 
-    /* Адаптив для телефонов */
+    /* ОБЪЕДИНЕННЫЙ БЛОК ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ */
     @media (max-width: 900px) {
-        .advantages-grid {
-            grid-template-columns: 1fr;
-            gap: 20px;
+        .hero-subtitle { font-size: 0.9rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; }
+        .separator { margin: 0 5px; }
+        .services-grid, .cases-grid, .grid-3, .advantages-grid { 
+            grid-template-columns: 1fr; display: flex; flex-direction: column; gap: 25px; border: none; background: transparent;
         }
-        .adv-card {
-            padding: 30px;
-            /* Используем ваши мобильные стили */
+        .service-item, .case-item, .card, .adv-card {
             border: 1px solid rgba(0, 240, 255, 0.4); 
             box-shadow: 0 0 15px rgba(0, 240, 255, 0.1); 
-            border-radius: 12px;
+            border-radius: 12px; padding: 30px;
         }
-        .adv-num {
-            font-size: 2rem;
+        .case-title { font-size: 1.5rem; word-wrap: break-word; }
+        .case-item.expanded { overflow-y: auto; align-items: flex-start; padding: 0; border: none; border-radius: 0; gap: 0; }
+        .case-expanded-layout { flex-direction: column-reverse; justify-content: flex-end; padding: 80px 20px 40px 20px; gap: 30px; height: auto; min-height: 100%; }
+        .case-item.expanded .case-title { font-size: 2rem !important; line-height: 1.1; margin-bottom: 15px; }
+        .case-details-text { font-size: 1rem; line-height: 1.5; }
+        .case-col-gallery { width: 100%; height: auto; flex: none; }
+        .gallery-frame {width: 100%; max-width: 100%; aspect-ratio: 4/5; height: auto; margin: 0 auto; }
+        .case-close-btn { 
+            top: 20px; right: 20px; font-size: 2rem; background: rgba(0,0,0,0.5); 
+            width: 40px; height: 40px; align-items: center; justify-content: center;
+            border-radius: 50%; z-index: 2002; display: none; 
         }
+        .case-item.expanded .case-close-btn { display: flex; }
+        .hero-title { font-size: 17vw !important; line-height: 1.0; margin-bottom: 10px; }
+        .hero-text { width: 100%; padding: 0 15px; }
+        .cube-wrapper { width: 320px; height: 320px; top: 35%; }
+        .hero-meta { max-width: 250px; margin-top: 50px; margin-bottom: 30px; }
+        .service-item { height: auto; min-height: 450px; }
+        .footer-links { flex-direction: column; gap: 20px; }
+        /* Fix blur performance on mobile */
+        .card, .service-item { backdrop-filter: none; background: rgba(10, 10, 10, 0.95); }
+        .adv-num { font-size: 2rem; }
     }
     </style>
 </head>
@@ -996,7 +977,7 @@
                     <div class="case-col-text">
                         <div class="case-tag">Development & More</div>
                         <h3 class="case-title">Other Projects</h3>
-                        <div class="case-details-text"><p>Разработка лендингов, мини-приложений, реализация нестандартных задачи.</p></div>
+                        <div class="case-details-text"><p>Разработка лендингов, мини-приложений, реализация нестандартных задач.</p></div>
                     </div>
                     <div class="case-col-gallery">
                         <div class="gallery-frame">
@@ -1012,7 +993,6 @@
         </div>
     </section>
 
-    <!-- ADVANTAGES / WHY US -->
     <!-- ADVANTAGES / WHY US -->
     <section id="advantages">
         <div class="container">
@@ -1251,12 +1231,12 @@
         /**
          * =========================================================================
          * РАЗДЕЛ 4: ВИЗУАЛЬНЫЕ ЭФФЕКТЫ (MOUSE GLOW & CANVAS)
+         * Оптимизировано: более плавное движение и высокая яркость (как на mobile)
          * =========================================================================
          */
          const glow = document.querySelector('.cursor-glow');
         if (glow) {
             document.addEventListener('mousemove', (e) => {
-                // Используем requestAnimationFrame для плавности следования за мышью
                 requestAnimationFrame(() => {
                     glow.style.left = e.clientX + 'px';
                     glow.style.top = e.clientY + 'px';
@@ -1275,23 +1255,14 @@
             // === НАСТРОЙКИ (ТЮНИНГ ПОД СТИЛЬ) ===
             const isMobile = window.innerWidth < 768;
             
-            // Количество частиц: чуть больше для больших экранов, чтобы не было пустот
             const particleCount = isMobile ? 35 : 85; 
-            
-            // Дистанция соединения: увеличиваем, чтобы линии были длиннее и элегантнее
             const connectionDistance = isMobile ? 110 : 160; 
-            
-            // Радиус реакции на мышь
             const mouseDistance = 220;
-            
-            // Коэффициент скорости: Меньше = Медленнее и плавнее (было 0.5)
             const speedFactor = 0.35; 
 
-            // Отслеживание мыши
             window.addEventListener('mousemove', (e) => { mouse.x = e.x; mouse.y = e.y; });
             window.addEventListener('mouseleave', () => { mouse.x = null; mouse.y = null; });
 
-            // Ресайз окна
             function resize() { 
                 width = canvas.width = window.innerWidth; 
                 height = canvas.height = window.innerHeight; 
@@ -1301,7 +1272,6 @@
                 constructor() {
                     this.x = Math.random() * width; 
                     this.y = Math.random() * height;
-                    // Скорость (vx, vy) теперь умножается на speedFactor для плавности
                     this.vx = (Math.random() - 0.5) * speedFactor; 
                     this.vy = (Math.random() - 0.5) * speedFactor;
                     this.size = Math.random() * 2 + 1;
@@ -1311,11 +1281,9 @@
                     this.x += this.vx; 
                     this.y += this.vy;
 
-                    // Отскок от краев
                     if (this.x < 0 || this.x > width) this.vx *= -1;
                     if (this.y < 0 || this.y > height) this.vy *= -1;
 
-                    // Реакция на мышь (мягкое отталкивание)
                     if (mouse.x != null) {
                         let dx = mouse.x - this.x; 
                         let dy = mouse.y - this.y;
@@ -1323,7 +1291,6 @@
                         
                         if (distance < mouseDistance) {
                             const force = (mouseDistance - distance) / mouseDistance;
-                            // Мягкое замедление отталкивания
                             this.vx -= (dx / distance) * force * 0.6;
                             this.vy -= (dy / distance) * force * 0.6;
                         }
@@ -1331,7 +1298,6 @@
                 }
                 
                 draw() {
-                    // ЯРКОСТЬ ЧАСТИЦ: увеличили с 0.4 до 0.6
                     ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
                     ctx.fillRect(this.x, this.y, this.size, this.size);
                 }
@@ -1349,7 +1315,6 @@
                     particles[i].update(); 
                     particles[i].draw();
 
-                    // Отрисовка линий (нейронные связи)
                     for (let j = i; j < particles.length; j++) {
                         let dx = particles[i].x - particles[j].x;
                         let dy = particles[i].y - particles[j].y;
@@ -1357,13 +1322,8 @@
 
                         if (distance < connectionDistance) {
                             ctx.beginPath();
-                            // Прозрачность зависит от дистанции
                             let opacity = 1 - (distance / connectionDistance);
-                            
-                            // ЯРКОСТЬ ЛИНИЙ: множитель увеличен с 0.15 до 0.25
-                            // Это делает линии более "неоновыми" и заметными на ПК
                             ctx.strokeStyle = 'rgba(0, 240, 255,' + (opacity * 0.25) + ')';
-                            
                             ctx.lineWidth = 1;
                             ctx.moveTo(particles[i].x, particles[i].y);
                             ctx.lineTo(particles[j].x, particles[j].y);
@@ -1374,71 +1334,70 @@
                 requestAnimationFrame(animate);
             }
 
-            // Запуск и обработка ресайза
             window.addEventListener('resize', () => { resize(); initParticles(); });
             resize(); 
             initParticles(); 
             animate();
         }
     </script>
+
+    <!-- SCHEMA.ORG MARKUP -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "CREAX Digital",
+      "image": "https://creax.digital/favbanner.png",
+      "url": "https://creax.digital",
+      "telephone": "", 
+      "email": "info@creax.digital", 
+      "priceRange": "$$",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "RU",
+        "addressLocality": "Moscow" 
+      },
+      "description": "Разработка брендинга, веб-дизайна и рекламных роликов с помощью нейросетей. Сокращаем бюджеты на продакшн до 3х раз. Заказать AI-дизайн.",
+      "brand": {
+        "@type": "Brand",
+        "name": "CREAX"
+      },
+      "sameAs": [
+        "https://t.me/creax_digital",
+        "https://www.instagram.com/creax.digital",
+        "https://www.behance.net/creax_digital"
+      ]
+    }
+    </script>
     
     <script type="application/ld+json">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  "name": "CREAX Digital",
-  "image": "https://creax.digital/favbanner.png",
-  "url": "https://creax.digital",
-  "telephone": "", 
-  "email": "info@creax.digital", 
-  "priceRange": "$$",
-  "address": {
-    "@type": "PostalAddress",
-    "addressCountry": "RU",
-    "addressLocality": "Moscow" 
-  },
-  "description": "Разработка брендинга, веб-дизайна и рекламных роликов с помощью нейросетей. Сокращаем бюджеты на продакшн до 3х раз. Заказать AI-дизайн.",
-  "brand": {
-    "@type": "Brand",
-    "name": "CREAX"
-  },
-  "sameAs": [
-    "https://t.me/creax_digital",
-    "https://www.instagram.com/creax.digital",
-    "https://www.behance.net/creax_digital"
-  ]
-}
-        
-</script>
-    
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [{
-    "@type": "Question",
-    "name": "Что такое нейросетевой дизайн?",
-    "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "Это создание визуального контента (изображений, видео, логотипов) с использованием искусственного интеллекта в связке с профессиональным ручным пост-продакшеном."
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "Что такое нейросетевой дизайн?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Это создание визуального контента (изображений, видео, логотипов) с использованием искусственного интеллекта в связке с профессиональным ручным пост-продакшеном."
+        }
+      }, {
+        "@type": "Question",
+        "name": "Сколько стоит разработка дизайна?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Мы предлагаем гибкий прайс под разные задачи бизнеса."
+        }
+      }, {
+        "@type": "Question",
+        "name": "Как быстро вы выполняете проекты?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Благодаря использованию AI мы реализуем проекты в 3-4 раза быстрее классических студий. То, что занимает недели, мы делаем за дни."
+        }
+      }]
     }
-  }, {
-    "@type": "Question",
-    "name": "Сколько стоит разработка дизайна?",
-    "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "Мы предлагаем гибкий прайс под разные задачи бизнеса."
-    }
-  }, {
-    "@type": "Question",
-    "name": "Как быстро вы выполняете проекты?",
-    "acceptedAnswer": {
-      "@type": "Answer",
-      "text": "Благодаря использованию AI мы реализуем проекты в 3-4 раза быстрее классических студий. То, что занимает недели, мы делаем за дни."
-    }
-  }]
-}
-</script>
+    </script>
+
 </body>
 </html>
