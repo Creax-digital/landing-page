@@ -563,28 +563,35 @@
         z-index: 2;
     }
 
-    /* === HOVER EFFECTS (АКЦЕНТ) === */
-    .adv-card:hover {
-        background: rgba(10, 15, 20, 0.8); /* Легкий синий оттенок фона */
+    /* === HOVER & ACTIVE EFFECTS (UPDATED) === */
+    .adv-card:hover,
+    .adv-card.active { 
+        background: rgba(10, 15, 20, 0.8);
         border-color: var(--accent-cyan);
         transform: translateY(-5px);
-        /* Свечение карточки */
         box-shadow: 0 10px 40px rgba(0, 240, 255, 0.1), inset 0 0 20px rgba(0, 240, 255, 0.05);
     }
 
-    /* При наведении иконка становится ярче, больше и сдвигается */
-    .adv-card:hover .adv-bg-icon {
-        opacity: 0.15; /* Ярче */
-        transform: scale(1.1) rotate(-5deg); /* Поворот и зум */
+    .adv-card:hover .adv-bg-icon,
+    .adv-card.active .adv-bg-icon { 
+        opacity: 0.15;
+        transform: scale(1.1) rotate(-5deg);
         right: -10px;
         bottom: -10px;
     }
 
-    /* Маркеры */
-    .adv-card:hover .marker::before,
-    .adv-card:hover .marker::after {
+    .adv-card:hover .marker::before, .adv-card:hover .marker::after,
+    .adv-card.active .marker::before, .adv-card.active .marker::after { 
         background: var(--accent-cyan);
         box-shadow: 0 0 10px var(--accent-cyan);
+    }
+
+    .adv-card:hover .adv-num,
+    .adv-card.active .adv-num { 
+        color: var(--accent-cyan);
+        -webkit-text-stroke: 1px var(--accent-cyan);
+        opacity: 1;
+        text-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
     }
 
     /* Текст и Заголовки */
@@ -608,13 +615,6 @@
         line-height: 1;
     }
 
-    .adv-card:hover .adv-num {
-        color: var(--accent-cyan);
-        -webkit-text-stroke: 1px var(--accent-cyan);
-        opacity: 1;
-        text-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
-    }
-
     .adv-title {
         font-size: 1.5rem;
         color: var(--text-main);
@@ -635,19 +635,10 @@
         100% { transform: translateY(0px); }
     }
 
-    /* Адаптив */
-    @media (max-width: 900px) {
-        .advantages-grid {
-            grid-template-columns: 1fr;
-        }
-        .adv-bg-icon {
-            width: 150px; 
-            height: 150px;
-            opacity: 0.05; /* На телефоне чуть виднее сразу */
-        }
+    /* MEDIA QUERIES */
+    @media (max-width: 1200px) {
+        .services-grid { grid-template-columns: repeat(2, 1fr); }
     }
-
-    /* ОБЪЕДИНЕННЫЙ БЛОК ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ */
     @media (max-width: 900px) {
         .hero-subtitle { font-size: 0.9rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; }
         .separator { margin: 0 5px; }
@@ -678,9 +669,14 @@
         .hero-meta { max-width: 250px; margin-top: 50px; margin-bottom: 30px; }
         .service-item { height: auto; min-height: 450px; }
         .footer-links { flex-direction: column; gap: 20px; }
-        /* Fix blur performance on mobile */
         .card, .service-item { backdrop-filter: none; background: rgba(10, 10, 10, 0.95); }
         .adv-num { font-size: 2rem; }
+        
+        .adv-bg-icon {
+            width: 150px; 
+            height: 150px;
+            opacity: 0.05; 
+        }
     }
     </style>
 </head>
@@ -1001,9 +997,8 @@
             
             <div class="advantages-grid">
                 
-                <!-- Card 01: Hybrid (Icon: Chip/Brain) -->
+                <!-- Card 01 -->
                 <div class="adv-card">
-                    <!-- Фоновая векторная иконка -->
                     <div class="adv-bg-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
@@ -1018,7 +1013,6 @@
                             <line x1="1" y1="14" x2="4" y2="14"></line>
                         </svg>
                     </div>
-
                     <div class="adv-content-wrapper">
                         <div class="adv-header">
                             <span class="adv-num">01</span>
@@ -1033,14 +1027,13 @@
                     <div class="marker tl"></div>
                 </div>
 
-                <!-- Card 02: Speed (Icon: Lightning) -->
+                <!-- Card 02 -->
                 <div class="adv-card">
                     <div class="adv-bg-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
                             <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
                         </svg>
                     </div>
-
                     <div class="adv-content-wrapper">
                         <div class="adv-header">
                             <span class="adv-num">02</span>
@@ -1056,7 +1049,7 @@
                     <div class="marker tr"></div>
                 </div>
 
-                <!-- Card 03: Complex (Icon: Layers/Stack) -->
+                <!-- Card 03 -->
                 <div class="adv-card">
                     <div class="adv-bg-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
@@ -1065,7 +1058,6 @@
                             <polyline points="2 12 12 17 22 12"></polyline>
                         </svg>
                     </div>
-
                     <div class="adv-content-wrapper">
                         <div class="adv-header">
                             <span class="adv-num">03</span>
@@ -1080,14 +1072,13 @@
                     <div class="marker bl"></div>
                 </div>
 
-                <!-- Card 04: DNA (Icon: DNA/Activity) -->
+                <!-- Card 04 -->
                 <div class="adv-card">
                     <div class="adv-bg-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
                         </svg>
                     </div>
-
                     <div class="adv-content-wrapper">
                         <div class="adv-header">
                             <span class="adv-num">04</span>
@@ -1096,12 +1087,11 @@
                         <p class="adv-desc">
                             Никаких шаблонных фотостоков. Весь контент генерируется с нуля под ваш бренд.
                             <br><br>
-                            Мы создаем уникальные визуальные метафоры, которые невозможно найти в интернете.
+                            Мы создаем уникальные метафоры, которые невозможно найти в интернете.
                         </p>
                     </div>
                     <div class="marker br"></div>
                 </div>
-
             </div>
         </div>
     </section>
@@ -1132,11 +1122,6 @@
 
     <!-- SCRIPTS -->
     <script>
-        /**
-         * =========================================================================
-         * РАЗДЕЛ 1: ЛОГИКА УСЛУГ (SERVICE HOVER EFFECTS)
-         * =========================================================================
-         */
         document.addEventListener("DOMContentLoaded", () => {
             const items = document.querySelectorAll('.service-item');
             items.forEach(item => {
@@ -1158,11 +1143,6 @@
             });
         });
 
-        /**
-         * =========================================================================
-         * РАЗДЕЛ 2: ЛОГИКА КЕЙСОВ (LAZY LOAD)
-         * =========================================================================
-         */
         function expandCase(element) {
             if (element.classList.contains('expanded')) return;
             element.classList.add('expanded');
@@ -1193,11 +1173,6 @@
             videos.forEach(v => v.pause());
         }
 
-        /**
-         * =========================================================================
-         * РАЗДЕЛ 3: СЛАЙДЕР ГАЛЕРЕИ
-         * =========================================================================
-         */
         function changeSlide(event, direction) {
             const container = event.target.closest('.gallery-frame');
             const slides = container.querySelectorAll('.gallery-slide');
@@ -1228,13 +1203,7 @@
             }
         }
 
-        /**
-         * =========================================================================
-         * РАЗДЕЛ 4: ВИЗУАЛЬНЫЕ ЭФФЕКТЫ (MOUSE GLOW & CANVAS)
-         * Оптимизировано: более плавное движение и высокая яркость (как на mobile)
-         * =========================================================================
-         */
-         const glow = document.querySelector('.cursor-glow');
+        const glow = document.querySelector('.cursor-glow');
         if (glow) {
             document.addEventListener('mousemove', (e) => {
                 requestAnimationFrame(() => {
@@ -1244,7 +1213,6 @@
             });
         }
 
-        // --- 2. Нейронная сеть (Canvas) ---
         const canvas = document.getElementById('canvas-bg');
         if (canvas) {
             const ctx = canvas.getContext('2d');
@@ -1252,9 +1220,7 @@
             let particles = [];
             let mouse = { x: null, y: null };
 
-            // === НАСТРОЙКИ (ТЮНИНГ ПОД СТИЛЬ) ===
             const isMobile = window.innerWidth < 768;
-            
             const particleCount = isMobile ? 35 : 85; 
             const connectionDistance = isMobile ? 110 : 160; 
             const mouseDistance = 220;
@@ -1310,16 +1276,13 @@
 
             function animate() {
                 ctx.clearRect(0, 0, width, height);
-                
                 for (let i = 0; i < particles.length; i++) {
                     particles[i].update(); 
                     particles[i].draw();
-
                     for (let j = i; j < particles.length; j++) {
                         let dx = particles[i].x - particles[j].x;
                         let dy = particles[i].y - particles[j].y;
                         let distance = Math.sqrt(dx*dx + dy*dy);
-
                         if (distance < connectionDistance) {
                             ctx.beginPath();
                             let opacity = 1 - (distance / connectionDistance);
@@ -1340,48 +1303,28 @@
             animate();
         }
 
-        /**
-     * =========================================================================
-     * MOBILE SCROLL ACTIVATION (ADVANTAGES)
-     * Подсветка карточек при скролле (эффект фокуса по центру экрана)
-     * =========================================================================
-     */
-    document.addEventListener("DOMContentLoaded", () => {
-        // Проверяем, что это мобильное устройство (ширина < 900px)
-        // Если хотите, чтобы работало и на ПК при скролле, уберите проверку if
-        if (window.innerWidth <= 900) {
-            
-            const cards = document.querySelectorAll('.adv-card');
-            
-            const observerOptions = {
-                root: null, // Окно браузера
-                // Самая магия здесь:
-                // Мы сужаем область срабатывания до узкой полосы в центре экрана.
-                // '-40% 0px -40% 0px' означает: игнорировать верхние 40% и нижние 40% экрана.
-                // Активная зона — только 20% посередине.
-                rootMargin: '-40% 0px -40% 0px', 
-                threshold: 0
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        // Карточка в центре экрана — включаем
-                        entry.target.classList.add('active');
-                    } else {
-                        // Карточка ушла из центра — выключаем
-                        entry.target.classList.remove('active');
-                    }
-                });
-            }, observerOptions);
-
-            cards.forEach(card => {
-                observer.observe(card);
-            });
-        }
-    });
+        document.addEventListener("DOMContentLoaded", () => {
+            if (window.innerWidth <= 900) {
+                const cards = document.querySelectorAll('.adv-card');
+                const observerOptions = {
+                    root: null, 
+                    rootMargin: '-40% 0px -40% 0px', 
+                    threshold: 0
+                };
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('active');
+                        } else {
+                            entry.target.classList.remove('active');
+                        }
+                    });
+                }, observerOptions);
+                cards.forEach(card => { observer.observe(card); });
+            }
+        });
     </script>
-    
+
     <!-- SCHEMA.ORG MARKUP -->
     <script type="application/ld+json">
     {
