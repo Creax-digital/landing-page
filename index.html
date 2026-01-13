@@ -556,28 +556,75 @@
     }
 
     .adv-card {
-        background: rgba(10, 10, 10, 0.6);
+        background: rgba(10, 10, 10, 0.4); /* Чуть прозрачнее фон */
         border: 1px solid var(--border-dim);
         padding: 50px;
         position: relative;
-        transition: all 0.4s ease;
-        overflow: hidden;
+        transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        overflow: hidden; /* Чтобы иконка не вылезала */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
+    /* === ФОНОВАЯ ИКОНКА (НОВОЕ) === */
+    .adv-bg-icon {
+        position: absolute;
+        right: -20px;
+        bottom: -20px;
+        width: 200px;
+        height: 200px;
+        color: var(--accent-cyan);
+        opacity: 0.03; /* Еле заметная по умолчанию */
+        z-index: 0;
+        pointer-events: none;
+        transition: all 0.6s ease;
+        
+        /* Анимация "Дыхания" */
+        animation: floatIcon 6s ease-in-out infinite;
+    }
+    
+    /* Сдвигаем анимацию для четных карточек, чтобы они двигались не синхронно */
+    .adv-card:nth-child(even) .adv-bg-icon {
+        animation-delay: 3s;
+    }
+
+    .adv-bg-icon svg {
+        width: 100%;
+        height: 100%;
+    }
+
+    /* Контент должен быть выше иконки */
+    .adv-content-wrapper {
+        position: relative;
+        z-index: 2;
+    }
+
+    /* === HOVER EFFECTS (АКЦЕНТ) === */
     .adv-card:hover {
-        background: rgba(15, 15, 15, 0.9);
+        background: rgba(10, 15, 20, 0.8); /* Легкий синий оттенок фона */
         border-color: var(--accent-cyan);
         transform: translateY(-5px);
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        /* Свечение карточки */
+        box-shadow: 0 10px 40px rgba(0, 240, 255, 0.1), inset 0 0 20px rgba(0, 240, 255, 0.05);
     }
 
-    /* Активация маркеров (уголков) при наведении */
+    /* При наведении иконка становится ярче, больше и сдвигается */
+    .adv-card:hover .adv-bg-icon {
+        opacity: 0.15; /* Ярче */
+        transform: scale(1.1) rotate(-5deg); /* Поворот и зум */
+        right: -10px;
+        bottom: -10px;
+    }
+
+    /* Маркеры */
     .adv-card:hover .marker::before,
     .adv-card:hover .marker::after {
         background: var(--accent-cyan);
         box-shadow: 0 0 10px var(--accent-cyan);
     }
 
+    /* Текст и Заголовки */
     .adv-header {
         display: flex;
         align-items: baseline;
@@ -609,12 +656,32 @@
         font-size: 1.5rem;
         color: var(--text-main);
         margin: 0;
+        text-transform: uppercase;
     }
 
     .adv-desc {
         color: var(--text-muted);
         font-size: 1rem;
         line-height: 1.7;
+    }
+
+    /* Анимация плавания иконки */
+    @keyframes floatIcon {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-15px); }
+        100% { transform: translateY(0px); }
+    }
+
+    /* Адаптив */
+    @media (max-width: 900px) {
+        .advantages-grid {
+            grid-template-columns: 1fr;
+        }
+        .adv-bg-icon {
+            width: 150px; 
+            height: 150px;
+            opacity: 0.05; /* На телефоне чуть виднее сразу */
+        }
     }
 
     /* Адаптив для телефонов */
@@ -946,6 +1013,7 @@
     </section>
 
     <!-- ADVANTAGES / WHY US -->
+    <!-- ADVANTAGES / WHY US -->
     <section id="advantages">
         <div class="container">
             <span class="subtitle">Почему выбирают нас</span>
@@ -953,59 +1021,103 @@
             
             <div class="advantages-grid">
                 
-                <!-- Advantage 1: Human + AI -->
+                <!-- Card 01: Hybrid (Icon: Chip/Brain) -->
                 <div class="adv-card">
-                    <div class="adv-header">
-                        <span class="adv-num">01</span>
-                        <h3 class="adv-title">Гибридный Продакшн</h3>
+                    <!-- Фоновая векторная иконка -->
+                    <div class="adv-bg-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
+                            <rect x="9" y="9" width="6" height="6"></rect>
+                            <line x1="9" y1="1" x2="9" y2="4"></line>
+                            <line x1="15" y1="1" x2="15" y2="4"></line>
+                            <line x1="9" y1="20" x2="9" y2="23"></line>
+                            <line x1="15" y1="20" x2="15" y2="23"></line>
+                            <line x1="20" y1="9" x2="23" y2="9"></line>
+                            <line x1="20" y1="14" x2="23" y2="14"></line>
+                            <line x1="1" y1="9" x2="4" y2="9"></line>
+                            <line x1="1" y1="14" x2="4" y2="14"></line>
+                        </svg>
                     </div>
-                    <p class="adv-desc">
-                        Мы не просто пишем "промпты". Мы объединяем генеративную мощь нейросетей с профессиональным ручным пост-продакшеном (After Effects, Photoshop, Cinema 4D). 
-                        <br><br>
-                        <span style="color: var(--accent-cyan);">Результат:</span> Кинематографическое качество и контроль деталей, недоступные обычным энтузиастам.
-                    </p>
+
+                    <div class="adv-content-wrapper">
+                        <div class="adv-header">
+                            <span class="adv-num">01</span>
+                            <h3 class="adv-title">Гибридный Продакшн</h3>
+                        </div>
+                        <p class="adv-desc">
+                            Мы не просто пишем "промпты". Мы объединяем генеративную мощь нейросетей с профессиональным ручным пост-продакшеном (After Effects, Photoshop). 
+                            <br><br>
+                            <span style="color: var(--accent-cyan);">Результат:</span> Кинематографическое качество и контроль деталей.
+                        </p>
+                    </div>
                     <div class="marker tl"></div>
                 </div>
 
-                <!-- Advantage 2: Speed -->
+                <!-- Card 02: Speed (Icon: Lightning) -->
                 <div class="adv-card">
-                    <div class="adv-header">
-                        <span class="adv-num">02</span>
-                        <h3 class="adv-title">Сверхзвуковая Скорость</h3>
+                    <div class="adv-bg-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                        </svg>
                     </div>
-                    <p class="adv-desc">
-                        Мы исключаем долгие этапы классического продакшна (поиск локаций, кастинг, аренда оборудования). 
-                        <br><br>
-                        То, что у классических студий занимает недели, мы реализуем за дни, сохраняя гибкость для правок на любом этапе проекта.
-                    </p>
+
+                    <div class="adv-content-wrapper">
+                        <div class="adv-header">
+                            <span class="adv-num">02</span>
+                            <h3 class="adv-title">Сверхзвуковая Скорость</h3>
+                        </div>
+                        <p class="adv-desc">
+                            Исключаем долгие этапы классического продакшна. То, что у студий занимает недели, мы реализуем за дни.
+                            <br><br>
+                            Гибкость для правок на любом этапе проекта без раздувания бюджета.
+                        </p>
+                    </div>
                     <div class="marker tr"></div>
                 </div>
 
-                <!-- Advantage 3: Complex Approach -->
+                <!-- Card 03: Complex (Icon: Layers/Stack) -->
                 <div class="adv-card">
-                    <div class="adv-header">
-                        <span class="adv-num">03</span>
-                        <h3 class="adv-title">Комплексный Подход</h3>
+                    <div class="adv-bg-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                            <polyline points="2 17 12 22 22 17"></polyline>
+                            <polyline points="2 12 12 17 22 12"></polyline>
+                        </svg>
                     </div>
-                    <p class="adv-desc">
-                        Full-stack дизайн в одном окне. Мы закрываем все визуальные потребности бренда: от разработки логотипа и айдентики до создания рекламных роликов и веб-интерфейсов.
-                        <br><br>
-                        Вам не нужно искать разных подрядчиков для разных задач.
-                    </p>
+
+                    <div class="adv-content-wrapper">
+                        <div class="adv-header">
+                            <span class="adv-num">03</span>
+                            <h3 class="adv-title">Комплексный Подход</h3>
+                        </div>
+                        <p class="adv-desc">
+                            Full-stack дизайн в одном окне. Закрываем все визуальные потребности: от логотипа до рекламных роликов.
+                            <br><br>
+                            Единая экосистема визуальных решений для вашего бренда.
+                        </p>
+                    </div>
                     <div class="marker bl"></div>
                 </div>
 
-                <!-- Advantage 4: Uniqueness (Дополнительная идея) -->
+                <!-- Card 04: DNA (Icon: DNA/Activity) -->
                 <div class="adv-card">
-                    <div class="adv-header">
-                        <span class="adv-num">04</span>
-                        <h3 class="adv-title">Визуальная ДНК</h3>
+                    <div class="adv-bg-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                        </svg>
                     </div>
-                    <p class="adv-desc">
-                        Никаких шаблонных фотостоков. Весь контент генерируется с нуля специально под ваш бренд. 
-                        <br><br>
-                        Мы создаем уникальные образы и метафоры, которые невозможно найти в интернете, выделяя вас на фоне конкурентов.
-                    </p>
+
+                    <div class="adv-content-wrapper">
+                        <div class="adv-header">
+                            <span class="adv-num">04</span>
+                            <h3 class="adv-title">Визуальная ДНК</h3>
+                        </div>
+                        <p class="adv-desc">
+                            Никаких шаблонных фотостоков. Весь контент генерируется с нуля под ваш бренд.
+                            <br><br>
+                            Мы создаем уникальные метафоры, которые невозможно найти в интернете.
+                        </p>
+                    </div>
                     <div class="marker br"></div>
                 </div>
 
