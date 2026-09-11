@@ -1,0 +1,40 @@
+# CREAX.digital
+
+CREAX.digital is an AI-native digital agency operating across three connected practices.
+
+## Core services
+
+- AI Content Production: AI images, AI video, brand design and campaign creative.
+- Web & Mini Apps: marketing websites, web applications and Telegram Mini Apps.
+- B2B Systems: custom dashboards, CRM systems, integrations and AI agent automation.
+
+## Official language editions
+
+- [Русский](https://creax.digital/ru/): AI-контент, сайты, miniapp, CRM, дашборды и AI-автоматизация.
+- [English](https://creax.digital/en/): AI content, websites, web apps, Telegram Mini Apps, CRM and automation.
+- [简体中文](https://creax.digital/zh-hans/): AIGC内容、网站与小程序、CRM、数据看板和AI自动化。
+
+## Service pages
+
+- [AI-контент](https://creax.digital/ru/creative/)
+- [Сайты и miniapp](https://creax.digital/ru/products/)
+- [CRM, дашборды и AI-автоматизация](https://creax.digital/ru/systems/)
+- [AI content production](https://creax.digital/en/creative/)
+- [Websites and mini apps](https://creax.digital/en/products/)
+- [CRM, dashboards and AI automation](https://creax.digital/en/systems/)
+- [AIGC内容制作](https://creax.digital/zh-hans/creative/)
+- [网站与小程序开发](https://creax.digital/zh-hans/products/)
+- [CRM、数据看板与AI自动化](https://creax.digital/zh-hans/systems/)
+
+## Work
+
+- [Работы](https://creax.digital/ru/work/)
+- [Selected work](https://creax.digital/en/work/)
+- [精选案例](https://creax.digital/zh-hans/work/)
+
+## Contact
+
+- Telegram: https://t.me/creax_digital
+- Email: info@creaxdigital.ru
+
+The linked pages are the source of service descriptions and published work. This file is a supplementary directory, not a substitute for the website or its sitemap.
