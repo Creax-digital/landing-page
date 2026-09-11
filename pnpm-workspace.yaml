@@ -1,0 +1,6 @@
+# Approve only the exact native-tool versions in the lockfile. New or changed
+# dependency build scripts still require review instead of silent execution.
+allowBuilds:
+  esbuild@0.27.3 || 0.28.2: true
+  sharp@0.34.5: true
+  workerd@1.20260515.1: true
